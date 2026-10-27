@@ -16,12 +16,12 @@ Independent Express API for the Archer web platform.
 Prisma 7 supports the bundled Node 24 runtime used for verification. Use Node 24 locally (the expected version is recorded in `.nvmrc`); Node 25 is not supported by Prisma 7.
 
 ```bash
-pnpm install
+npm install
 cp .env.example .env  # api/.env is already provided for local development
-pnpm db:generate
-pnpm db:migrate --name init
-pnpm db:seed
-pnpm dev
+npm run db:generate
+npm run db:migrate -- --name init
+npm run db:seed
+npm run dev
 ```
 
 The API listens on `http://localhost:5001` by default.
@@ -31,7 +31,7 @@ Use these URLs to verify it is running:
 - `http://localhost:5001/health` checks that the process is alive.
 - `http://localhost:5001/ready` checks that Prisma can access SQLite.
 
-The root URL (`http://localhost:5001`) is not a web page and may return `404`; use one of the health URLs above. If SQLite reports a native Node-version mismatch, use Node 24 from `.nvmrc` and run `pnpm rebuild better-sqlite3`.
+The root URL (`http://localhost:5001`) returns API status information. If SQLite reports a native Node-version mismatch, use Node 24 from `.nvmrc` and run `npm rebuild better-sqlite3`.
 
 Demo accounts use the password `ArcherDemo123!`:
 

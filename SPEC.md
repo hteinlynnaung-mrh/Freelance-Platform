@@ -272,7 +272,7 @@ Archer/
 The supplied shadcn command is:
 
 ```bash
-pnpm dlx shadcn@latest init --preset bciwM7vc --template next
+npx shadcn@latest init --preset bciwM7vc --template next
 ```
 
 Because `--template next` creates a Next-oriented project, confirm whether Archer should use Next.js routing or a plain React/Vite app. If React Router is a firm requirement, keep the app as a React SPA and use the equivalent shadcn initialization path for that template.
@@ -395,7 +395,7 @@ Seed data must be safe to run in a fresh local database and should either reset 
 
 Each project should document:
 
-- Required Node.js and pnpm versions.
+- Required Node.js and npm versions.
 - Install, dev, build, lint, typecheck, test, and seed commands.
 - Environment variables with safe example values.
 - API base URL configuration.
@@ -405,10 +405,10 @@ Each project should document:
 Suggested commands from the project root after the three projects exist:
 
 ```bash
-pnpm --dir api dev
-pnpm --dir api db:migrate
-pnpm --dir api db:seed
-pnpm --dir app dev
+npm --prefix api run dev
+npm --prefix api run db:migrate
+npm --prefix api run db:seed
+npm --prefix app run dev
 ```
 
 The exact scripts may vary by package manager setup; the README in each project is authoritative.

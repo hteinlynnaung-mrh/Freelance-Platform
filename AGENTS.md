@@ -10,10 +10,10 @@
 ## Local development
 
 - Use Node 24 for the API, as recorded in `api/.nvmrc`.
-- Use pnpm and install dependencies from the directory being worked on.
-- Website: run `pnpm dev` in `app/`; it serves on port `5000`.
-- API: run `pnpm dev` in `api/`; it serves on port `5001`.
-- Mobile: run `pnpm dev` in `mobile/`; opens the Expo dev server. Scan QR with Expo Go or press `i`/`a` for simulator.
+- Use npm and install dependencies from the directory being worked on.
+- Website: run `npm run dev` in `app/`; it serves on port `5000`.
+- API: run `npm run dev` in `api/`; it serves on port `5001`.
+- Mobile: run `npm run dev` in `mobile/`; opens the Expo dev server. Scan QR with Expo Go or press `i`/`a` for simulator.
   - Set `EXPO_PUBLIC_API_URL` in `mobile/.env` to your machine's LAN IP when testing on a physical device (e.g. `http://192.168.1.x:5001`). Leave as `http://localhost:5001` for simulators.
 - The website uses the Vite `/api` proxy in local development. Keep `app/.env` `VITE_API_URL` empty unless a remote API is intentional.
 - Do not commit secrets. Use `.env.example` files as templates.
@@ -39,16 +39,16 @@
 Before handing off changes, run the narrowest relevant checks. For website changes:
 
 ```bash
-pnpm --dir app typecheck
-pnpm --dir app build
+npm --prefix app run typecheck
+npm --prefix app run build
 ```
 
 For API changes:
 
 ```bash
-pnpm --dir api typecheck
-pnpm --dir api build
-pnpm --dir api test
+npm --prefix api run typecheck
+npm --prefix api run build
+npm --prefix api test
 ```
 
 When database schema or seed data changes, also run the appropriate Prisma generate, migration, and seed commands with care for existing local data.
@@ -56,7 +56,7 @@ When database schema or seed data changes, also run the appropriate Prisma gener
 For mobile changes:
 
 ```bash
-pnpm --dir mobile typecheck
+npm --prefix mobile run typecheck
 ```
 
 ## Mobile implementation standards

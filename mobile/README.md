@@ -5,7 +5,7 @@ Expo React Native app for the Archer freelance platform.
 ## Requirements
 
 - Node.js 20+
-- pnpm
+- npm
 - Expo CLI: `npm install -g expo-cli` (or use `npx expo`)
 - Expo Go on your device (for physical device testing)
 
@@ -13,7 +13,7 @@ Expo React Native app for the Archer freelance platform.
 
 ```bash
 cd mobile
-pnpm install
+npm install
 cp .env.example .env
 # Edit .env and set EXPO_PUBLIC_API_URL to your API address
 ```
@@ -22,12 +22,12 @@ cp .env.example .env
 
 Start the API first:
 ```bash
-pnpm --dir api dev   # API on port 5001
+npm --prefix api run dev   # API on port 5001
 ```
 
 Then start the mobile app:
 ```bash
-pnpm --dir mobile dev
+npm run dev
 ```
 
 Scan the QR code with Expo Go (iOS/Android) or press `i`/`a` for simulator.
@@ -38,11 +38,11 @@ Scan the QR code with Expo Go (iOS/Android) or press `i`/`a` for simulator.
 
 | Command | Description |
 |---|---|
-| `pnpm dev` | Start Expo dev server |
-| `pnpm ios` | Open in iOS Simulator |
-| `pnpm android` | Open in Android emulator |
-| `pnpm typecheck` | TypeScript check |
-| `pnpm build` | Export static bundle |
+| `npm run dev` | Start Expo dev server |
+| `npm run ios` | Open in iOS Simulator |
+| `npm run android` | Open in Android emulator |
+| `npm run typecheck` | TypeScript check |
+| `npm run build` | Export static bundle |
 
 ## Demo accounts
 

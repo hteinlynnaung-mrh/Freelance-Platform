@@ -8,15 +8,15 @@ Start the API in one terminal:
 
 ```bash
 cd /Users/hteinlynnaung/Downloads/Freelance/api
-pnpm dev
+npm run dev
 ```
 
 Start the website in a second terminal:
 
 ```bash
 cd /Users/hteinlynnaung/Downloads/Freelance/app
-pnpm install
-pnpm dev
+npm install
+npm run dev
 ```
 
 Open [http://localhost:5000](http://localhost:5000). During local development, Vite forwards `/api` requests to the API at `http://localhost:5001`.
@@ -31,6 +31,6 @@ If the API is running on another URL, create `app/.env` from `.env.example` and 
 ## Verify a production build
 
 ```bash
-pnpm typecheck
-pnpm build
+npm run typecheck
+npm run build
 ```

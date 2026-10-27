@@ -25,9 +25,9 @@ This file keeps Claude-compatible tooling aligned with the repository instructio
 Run the relevant commands before reporting completion:
 
 ```bash
-pnpm --dir app typecheck
-pnpm --dir app build
-pnpm --dir api typecheck
-pnpm --dir api build
-pnpm --dir api test
+npm --prefix app run typecheck
+npm --prefix app run build
+npm --prefix api run typecheck
+npm --prefix api run build
+npm --prefix api test
 ```
