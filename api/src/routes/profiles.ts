@@ -4,7 +4,7 @@ import { forbidden, notFound } from "../lib/errors.js";
 import { requireAuth } from "../middleware/auth.js";
 import { prisma } from "../prisma.js";
 
-const currency = z.enum(["USD", "THB"]);
+const currency = z.enum(["USD", "JPY"]);
 const clientProfileSchema = z.object({
   displayName: z.string().trim().min(2).max(80).optional(),
   company: z.string().trim().max(120).nullable().optional(),

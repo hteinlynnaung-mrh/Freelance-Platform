@@ -2,67 +2,51 @@
 
 ## Project shape
 
-- `app/` is the React/Vite website.
-- `api/` is the independent Express/Prisma/SQLite API.
-- `mobile/` is the Expo React Native app (iOS + Android). It was re-introduced and consumes the same `/api/v1` contract.
-- Keep all three independently runnable; integrate through the documented HTTP API.
+- app/ is the React/Vite website on port 5000.
+- api/ is the independent Express/Prisma/SQLite API on port 5001.
+- mobile/ is the Expo React Native app. It consumes the same /api/v1 contract as the website.
+- Keep all three projects independently runnable. Integrate them through the documented HTTP API rather than importing code across projects.
+- Docker files are intentionally absent. Use the Node/npm commands in the READMEs.
 
 ## Local development
 
-- Use Node 24 for the API, as recorded in `api/.nvmrc`.
-- Use npm and install dependencies from the directory being worked on.
-- Website: run `npm run dev` in `app/`; it serves on port `5000`.
-- API: run `npm run dev` in `api/`; it serves on port `5001`.
-- Mobile: run `npm run dev` in `mobile/`; opens the Expo dev server. Scan QR with Expo Go or press `i`/`a` for simulator.
-  - Set `EXPO_PUBLIC_API_URL` in `mobile/.env` to your machine's LAN IP when testing on a physical device (e.g. `http://192.168.1.x:5001`). Leave as `http://localhost:5001` for simulators.
-- The website uses the Vite `/api` proxy in local development. Keep `app/.env` `VITE_API_URL` empty unless a remote API is intentional.
-- Do not commit secrets. Use `.env.example` files as templates.
+- Use Node 24.19.x for the API and web app, as recorded in api/.nvmrc and app/.nvmrc.
+- Use npm and install dependencies from the project being worked on.
+- Website: npm run dev in app/; Vite serves port 5000 and proxies /api to port 5001.
+- API: npm run dev in api/; Express serves port 5001.
+- Mobile: npm run dev in mobile/; use Expo Go or press i/a for a simulator.
+- Set EXPO_PUBLIC_API_URL in mobile/.env to the machine LAN IP for a physical device. Use http://localhost:5001 for simulators/emulators.
+- Keep app/.env VITE_API_URL empty for the local Vite proxy unless a remote API is intentional.
+- Do not commit secrets. Use .env.example files as templates.
 
 ## Implementation standards
 
-- Use TypeScript and preserve the existing React, React Router, TanStack React Query, Express, Prisma, and Zod patterns.
+- Use TypeScript and preserve the existing React, React Router, TanStack React Query, Express, Prisma, Zod, Expo Router, and NativeWind patterns.
 - Validate request input at API boundaries and enforce authorization in the API, not only in the UI.
-- Keep API responses and errors consistent with the existing `/api/v1` contract.
-- Store money with an explicit `USD` or `THB` currency and integer minor units. Do not add payment, exchange-rate, escrow, or payout behavior without an explicit request.
-- Prefer small, focused changes and do not rewrite unrelated user work.
+- Keep API responses and errors consistent with the existing /api/v1 contract.
+- Store money as integer minor units with an explicit USD or JPY currency code. JPY display uses whole yen with no decimal places; do not infer currency from locale.
+- Do not add payment, exchange-rate, escrow, payout, invoice, or tax behavior without an explicit product request.
+- Prefer small, focused changes and preserve unrelated user work.
+- Keep user-visible web and mobile copy in the locale dictionaries and use the existing i18n providers.
+- Supported UI locales are English and Japanese. Japanese copy needs natural vertical space, relaxed line height where needed, no custom letter-spacing, and no fixed heights that clip glyphs.
+- Web theme changes must work for both data-theme="dark" and the dark class. Check cards, navigation, forms, buttons, popovers, and mapped lists for contrast in both themes.
+- Web auth uses browser localStorage; mobile auth uses expo-secure-store. Never log access or refresh tokens.
 
-## English/Burmese i18n
+## API boundaries
 
-- Follow the project-local skill at `.cursor/skills/burmese-i18n/SKILL.md` for translated UI work.
-- Add user-facing copy to both locale dictionaries and use the existing i18n provider rather than hardcoded component strings.
-- Do not translate every technical or well-known UI term when English is clearer.
-- Burmese text must have font-appropriate vertical space and must not use custom `letter-spacing`.
-- Avoid fixed heights, clipping, and single-line assumptions that can break Burmese text.
+The API is mounted under /api/v1 and owns domain rules for authentication, profiles, projects, saved projects, proposals, engagements, conversations, notifications, reviews, and reference data. Role and ownership checks belong in API handlers.
+
+The API currently supports USD and JPY only. Proposal currency must match the project currency. Payment execution and currency conversion are not implemented.
 
 ## Verification
 
-Before handing off changes, run the narrowest relevant checks. For website changes:
+Before handing off changes, run the narrowest relevant checks:
 
-```bash
-npm --prefix app run typecheck
-npm --prefix app run build
-```
+    npm --prefix app run typecheck
+    npm --prefix app run build
+    npm --prefix api run typecheck
+    npm --prefix api run build
+    npm --prefix api test
+    npm --prefix mobile run typecheck
 
-For API changes:
-
-```bash
-npm --prefix api run typecheck
-npm --prefix api run build
-npm --prefix api test
-```
-
-When database schema or seed data changes, also run the appropriate Prisma generate, migration, and seed commands with care for existing local data.
-
-For mobile changes:
-
-```bash
-npm --prefix mobile run typecheck
-```
-
-## Mobile implementation standards
-
-- Use the same TypeScript patterns. Components use NativeWind v4 `className` props; avoid raw `StyleSheet` unless necessary.
-- Mirror i18n keys between `mobile/src/i18n/translations.ts` and `app/src/i18n/translations.ts`. Add to both.
-- Burmese typography rules from `.cursor/skills/burmese-i18n/SKILL.md` apply on mobile too: use `leading-relaxed` for Burmese text, no `letterSpacing`, no fixed heights that clip glyphs.
-- Store auth tokens in `expo-secure-store` only. Never log tokens.
-- Prefer `useQuery` + `useMutation` from TanStack Query for all server state.
+For schema or seed changes, also run the appropriate Prisma generate, migration, and seed commands carefully against local development data. Update README.md, SPEC.md, and TODO.md when the architecture or feature status changes.

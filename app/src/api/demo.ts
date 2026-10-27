@@ -36,7 +36,7 @@ export const demoProjects: PagedProjects = {
       slug: "demo-launch-content",
       description: "Help turn a new product story into clear website copy, launch messages, and a handful of useful customer stories.",
       budgetMinor: 3000000,
-      currency: "THB",
+      currency: "JPY",
       budgetType: "FIXED",
       deadline: null,
       publishedAt: new Date().toISOString(),

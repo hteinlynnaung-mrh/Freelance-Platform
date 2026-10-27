@@ -1,4 +1,4 @@
-export type Currency = "USD" | "THB";
+export type Currency = "USD" | "JPY";
 export type BudgetType = "FIXED" | "HOURLY";
 
 export interface Category { id: string; name: string; slug?: string; }

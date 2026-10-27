@@ -13,7 +13,7 @@ import { useI18n } from '../../src/i18n/I18nProvider';
 
 export default function ProfileScreen() {
   const { user, logout } = useAuth();
-  const { t, language, setLanguage, isBurmese } = useI18n();
+  const { t, language, setLanguage, isJapanese } = useI18n();
   const router = useRouter();
   const { data, isLoading } = useMyProfile();
   const updateProfile = useUpdateMyProfile();
@@ -86,7 +86,7 @@ export default function ProfileScreen() {
               {fp?.headline && (
                 <View className="gap-1">
                   <Text className="text-sm font-medium text-slate-500">{t('headline')}</Text>
-                  <Text className={`text-slate-700 dark:text-slate-300 ${isBurmese ? 'leading-relaxed' : ''}`}>{fp.headline}</Text>
+                  <Text className={`text-slate-700 dark:text-slate-300 ${isJapanese ? 'leading-relaxed' : ''}`}>{fp.headline}</Text>
                 </View>
               )}
               {(fp?.bio ?? cp?.bio) && (
@@ -110,7 +110,7 @@ export default function ProfileScreen() {
           <View className="bg-white dark:bg-slate-800 rounded-2xl p-4 gap-3">
             <Text className="text-sm font-medium text-slate-500">{t('language')}</Text>
             <View className="flex-row gap-3">
-              {(['en', 'my'] as const).map((lang) => (
+              {(['en', 'ja'] as const).map((lang) => (
                 <Pressable
                   key={lang}
                   onPress={() => setLanguage(lang)}
@@ -121,7 +121,7 @@ export default function ProfileScreen() {
                   }`}
                 >
                   <Text className={language === lang ? 'text-indigo-700 dark:text-indigo-300 font-semibold' : 'text-slate-500'}>
-                    {lang === 'en' ? t('english') : t('burmese')}
+                    {lang === 'en' ? t('english') : t('japanese')}
                   </Text>
                 </Pressable>
               ))}

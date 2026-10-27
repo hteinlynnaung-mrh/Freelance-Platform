@@ -1,3 +1,18 @@
 .language-switcher { display: inline-flex; align-items: center; gap: 6px; color: #728078; font-size: 11px; }
 .language-switcher select { appearance: none; border: 0; background: transparent; color: #18322b; cursor: pointer; font-size: 11px; outline: 0; }
+:is([data-theme="dark"], .dark) .language-switcher select { color: #e7f1e9; }
+:root { --body-line-height: 1.45; }
+body { line-height: var(--body-line-height); }
+[data-language="ja"] { --body-line-height: 1.6; }
+[data-language="ja"] h1,
+[data-language="ja"] h2,
+[data-language="ja"] h3,
+[data-language="ja"] p,
+[data-language="ja"] button,
+[data-language="ja"] input,
+[data-language="ja"] select,
+[data-language="ja"] label { letter-spacing: normal; }
+[data-language="ja"] button,
+[data-language="ja"] input,
+[data-language="ja"] select { min-height: 2.75rem; }
 @media (max-width: 800px) { .language-switcher span { display: none; } .language-switcher select { max-width: 63px; } }

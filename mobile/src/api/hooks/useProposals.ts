@@ -18,7 +18,7 @@ export function useProposals() {
 export interface SubmitProposalInput {
   coverLetter: string;
   proposedAmountMinor: number;
-  currency: 'USD' | 'THB';
+  currency: 'USD' | 'JPY';
   estimatedDurationDays?: number;
 }
 

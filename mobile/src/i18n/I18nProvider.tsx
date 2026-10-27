@@ -8,7 +8,7 @@ interface I18nContextValue {
   language: Language;
   setLanguage: (lang: Language) => void;
   t: (key: TranslationKey, vars?: Record<string, string | number>) => string;
-  isBurmese: boolean;
+  isJapanese: boolean;
 }
 
 const I18nContext = createContext<I18nContextValue | null>(null);
@@ -18,7 +18,7 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     SecureStore.getItemAsync(LANG_KEY)
-      .then((v) => { if (v === 'en' || v === 'my') setLanguageState(v as Language); })
+      .then((v) => { if (v === 'en' || v === 'ja') setLanguageState(v as Language); })
       .catch(() => {});
   }, []);
 
@@ -36,7 +36,7 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   }, [language]);
 
   return (
-    <I18nContext.Provider value={{ language, setLanguage, t, isBurmese: language === 'my' }}>
+    <I18nContext.Provider value={{ language, setLanguage, t, isJapanese: language === 'ja' }}>
       {children}
     </I18nContext.Provider>
   );

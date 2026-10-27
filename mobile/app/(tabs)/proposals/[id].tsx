@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Alert, KeyboardAvoidingView, Platform, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useProposals, useSubmitProposal, useWithdrawProposal, useShortlistProposal, useRejectProposal, useAcceptProposal } from '../../../src/api/hooks/useProposals';
+import { useProject } from '../../../src/api/hooks/useProjects';
 import { useAuth } from '../../../src/auth/AuthContext';
 import { Badge } from '../../../src/components/ui/Badge';
 import { Button } from '../../../src/components/ui/Button';
@@ -25,6 +26,8 @@ export default function ProposalDetailScreen() {
   const [amount, setAmount] = useState('');
   const [days, setDays] = useState('');
   const submitProposal = useSubmitProposal(id!);
+  const { data: projectData } = useProject(id!);
+  const proposalCurrency = projectData?.data.currency ?? 'USD';
 
   const { data, isLoading, error } = useProposals();
   const proposal = isSubmitMode ? null : (data?.data ?? []).find((p) => p.id === id);
@@ -37,7 +40,7 @@ export default function ProposalDetailScreen() {
   const handleSubmit = async () => {
     if (!coverLetter.trim() || !amount) { Alert.alert('Please fill in all fields.'); return; }
     try {
-      await submitProposal.mutateAsync({ coverLetter, proposedAmountMinor: Math.round(parseFloat(amount) * 100), currency: 'USD', estimatedDurationDays: days ? parseInt(days) : undefined });
+      await submitProposal.mutateAsync({ coverLetter, proposedAmountMinor: Math.round(parseFloat(amount) * 100), currency: proposalCurrency, estimatedDurationDays: days ? parseInt(days) : undefined });
       Alert.alert('Proposal submitted!', '', [{ text: 'OK', onPress: () => router.back() }]);
     } catch (e: any) { Alert.alert(e?.message ?? t('somethingWentWrong')); }
   };
@@ -49,7 +52,7 @@ export default function ProposalDetailScreen() {
         <KeyboardAvoidingView className="flex-1" behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
           <ScrollView contentContainerClassName="p-4 gap-4" keyboardShouldPersistTaps="handled">
             <Input label={t('coverLetter')} value={coverLetter} onChangeText={setCoverLetter} multiline numberOfLines={6} placeholder="Describe your approach and relevant experience…" />
-            <Input label={`${t('proposedAmount')} (USD major, e.g. 1500)`} value={amount} onChangeText={setAmount} keyboardType="decimal-pad" placeholder="1500" />
+            <Input label={`${t('proposedAmount')} (${proposalCurrency}, e.g. 1500)`} value={amount} onChangeText={setAmount} keyboardType="decimal-pad" placeholder="1500" />
             <Input label={t('estimatedDuration')} value={days} onChangeText={setDays} keyboardType="number-pad" placeholder="30" />
             <Button label={t('submitProposal')} onPress={handleSubmit} loading={submitProposal.isPending} />
           </ScrollView>

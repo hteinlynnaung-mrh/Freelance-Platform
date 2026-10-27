@@ -80,4 +80,4 @@ Demo accounts use the password `ArcherDemo123!`:
 - `POST /api/v1/reviews`
 - `GET /api/v1/reviews/users/:userId`
 
-All monetary values use integer minor units with an explicit `USD` or `THB` currency code. Payments, exchange rates, escrow, and payouts are not implemented.
+All monetary values use integer minor units with an explicit `USD` or `JPY` currency code. Payments, exchange rates, escrow, and payouts are not implemented.

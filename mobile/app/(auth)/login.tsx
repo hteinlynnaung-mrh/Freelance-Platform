@@ -4,11 +4,12 @@ import { KeyboardAvoidingView, Platform, ScrollView, Text, View } from 'react-na
 import { useAuth } from '../../src/auth/AuthContext';
 import { Button } from '../../src/components/ui/Button';
 import { Input } from '../../src/components/ui/Input';
+import { ArcherMark } from '../../src/components/shared/ArcherMark';
 import { useI18n } from '../../src/i18n/I18nProvider';
 
 export default function LoginScreen() {
   const { login } = useAuth();
-  const { t, isBurmese } = useI18n();
+  const { t, isJapanese } = useI18n();
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -34,8 +35,9 @@ export default function LoginScreen() {
       <ScrollView contentContainerClassName="flex-grow px-6 py-12 justify-center gap-6" keyboardShouldPersistTaps="handled">
         {/* Logo / brand */}
         <View className="items-center gap-2 mb-4">
-          <Text className="text-4xl font-bold text-indigo-600">Archer</Text>
-          <Text className={`text-slate-500 dark:text-slate-400 text-center ${isBurmese ? 'leading-relaxed' : ''}`}>
+          <ArcherMark size={58} />
+          <Text className="text-3xl font-bold text-slate-900 dark:text-slate-100">Archer</Text>
+          <Text className={`text-slate-500 dark:text-slate-400 text-center ${isJapanese ? 'leading-relaxed' : ''}`}>
             {t('signInCopy')}
           </Text>
         </View>

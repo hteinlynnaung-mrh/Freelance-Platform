@@ -5,7 +5,7 @@ import { forbidden, notFound } from "../lib/errors.js";
 import { requireAuth } from "../middleware/auth.js";
 import { prisma } from "../prisma.js";
 
-const currency = z.enum(["USD", "THB"]);
+const currency = z.enum(["USD", "JPY"]);
 const budgetType = z.enum(["FIXED", "HOURLY"]);
 const createProjectSchema = z.object({
   title: z.string().trim().min(5).max(140),
@@ -52,7 +52,14 @@ projectsRouter.get("/", async (req, res, next) => {
       ...(input.minBudgetMinor !== undefined || input.maxBudgetMinor !== undefined
         ? { budgetMinor: { ...(input.minBudgetMinor !== undefined ? { gte: input.minBudgetMinor } : {}), ...(input.maxBudgetMinor !== undefined ? { lte: input.maxBudgetMinor } : {}) } }
         : {}),
-      ...(input.q ? { OR: [{ title: { contains: input.q } }, { description: { contains: input.q } }] } : {})
+      ...(input.q ? {
+        OR: [
+          { title: { contains: input.q } },
+          { description: { contains: input.q } },
+          { category: { name: { contains: input.q } } },
+          { skills: { some: { skill: { name: { contains: input.q } } } } },
+        ],
+      } : {})
     };
     const [items, total] = await prisma.$transaction([
       prisma.project.findMany({ where, include: { category: true, skills: { include: { skill: true } } }, orderBy: { publishedAt: "desc" }, skip: (input.page - 1) * input.pageSize, take: input.pageSize }),

@@ -4,13 +4,14 @@ import { KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, View } fro
 import { useAuth } from '../../src/auth/AuthContext';
 import { Button } from '../../src/components/ui/Button';
 import { Input } from '../../src/components/ui/Input';
+import { ArcherMark } from '../../src/components/shared/ArcherMark';
 import { useI18n } from '../../src/i18n/I18nProvider';
 
 type Role = 'CLIENT' | 'FREELANCER';
 
 export default function RegisterScreen() {
   const { register } = useAuth();
-  const { t, isBurmese } = useI18n();
+  const { t, isJapanese } = useI18n();
   const router = useRouter();
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
@@ -38,8 +39,9 @@ export default function RegisterScreen() {
     <KeyboardAvoidingView className="flex-1 bg-white dark:bg-slate-900" behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <ScrollView contentContainerClassName="flex-grow px-6 py-12 justify-center gap-6" keyboardShouldPersistTaps="handled">
         <View className="items-center gap-2 mb-4">
-          <Text className="text-4xl font-bold text-indigo-600">Archer</Text>
-          <Text className={`text-slate-500 dark:text-slate-400 text-center ${isBurmese ? 'leading-relaxed' : ''}`}>
+          <ArcherMark size={58} />
+          <Text className="text-3xl font-bold text-slate-900 dark:text-slate-100">Archer</Text>
+          <Text className={`text-slate-500 dark:text-slate-400 text-center ${isJapanese ? 'leading-relaxed' : ''}`}>
             {t('createYourAccount')}
           </Text>
         </View>
@@ -61,7 +63,7 @@ export default function RegisterScreen() {
                 <Text className={`font-semibold text-center ${role === r ? 'text-indigo-700 dark:text-indigo-300' : 'text-slate-700 dark:text-slate-300'}`}>
                   {t(r === 'CLIENT' ? 'clientRole' : 'freelancerRole')}
                 </Text>
-                <Text className={`text-xs text-center mt-1 ${isBurmese ? 'leading-relaxed' : ''} ${role === r ? 'text-indigo-500' : 'text-slate-400'}`}>
+                <Text className={`text-xs text-center mt-1 ${isJapanese ? 'leading-relaxed' : ''} ${role === r ? 'text-indigo-500' : 'text-slate-400'}`}>
                   {t(r === 'CLIENT' ? 'clientRoleCopy' : 'freelancerRoleCopy')}
                 </Text>
               </Pressable>
@@ -84,7 +86,7 @@ export default function RegisterScreen() {
           </Link>
         </View>
 
-        <Text className={`text-xs text-slate-400 text-center ${isBurmese ? 'leading-relaxed' : ''}`}>{t('termsCopy')}</Text>
+                <Text className={`text-xs text-slate-400 text-center ${isJapanese ? 'leading-relaxed' : ''}`}>{t('termsCopy')}</Text>
       </ScrollView>
     </KeyboardAvoidingView>
   );

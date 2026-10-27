@@ -3,4 +3,7 @@
 .connection-banner strong { color: #5c4b1f; font-size: 12px; }
 .connection-banner span { font-size: 11px; }
 .connection-banner button { border: 0; border-bottom: 1px solid #a88b3e; background: transparent; color: #725e28; cursor: pointer; font-size: 11px; white-space: nowrap; }
+:where([data-theme="dark"], .dark) .connection-banner { border-color: #6f5b29; background: #332b16; color: #f4d98a; }
+:where([data-theme="dark"], .dark) .connection-banner strong { color: #ffe6a8; }
+:where([data-theme="dark"], .dark) .connection-banner button { border-color: #d5b65e; color: #f4d98a; }
 @media (max-width: 800px) { .connection-banner { align-items: flex-start; flex-direction: column; gap: 11px; } }

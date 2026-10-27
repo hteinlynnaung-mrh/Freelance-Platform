@@ -10,12 +10,8 @@ interface CurrencyBadgeProps {
 }
 
 function formatMoney(amountMinor: number, currency: Currency): string {
-  const major = currency === 'USD' ? amountMinor / 100 : amountMinor / 100;
-  if (currency === 'USD') {
-    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(major);
-  }
-  // THB — show whole baht
-  return `฿${new Intl.NumberFormat('th-TH', { maximumFractionDigits: 0 }).format(major)}`;
+  const major = amountMinor / 100;
+  return new Intl.NumberFormat('en-US', { style: 'currency', currency, currencyDisplay: 'narrowSymbol', maximumFractionDigits: 0 }).format(major);
 }
 
 export function CurrencyBadge({ amountMinor, currency, type, compact }: CurrencyBadgeProps) {

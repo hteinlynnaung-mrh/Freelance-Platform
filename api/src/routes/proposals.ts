@@ -7,7 +7,7 @@ import { prisma } from "../prisma.js";
 const proposalSchema = z.object({
   coverLetter: z.string().trim().min(20).max(10000),
   proposedAmountMinor: z.number().int().nonnegative(),
-  currency: z.enum(["USD", "THB"]),
+  currency: z.enum(["USD", "JPY"]),
   estimatedDurationDays: z.number().int().positive().max(3650).optional()
 });
 

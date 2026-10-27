@@ -47,7 +47,7 @@ export default function ProjectsScreen() {
         </View>
         {/* Currency filter */}
         <View className="flex-row gap-2">
-          {(['', 'USD', 'THB'] as const).map((c) => (
+          {(['', 'USD', 'JPY'] as const).map((c) => (
             <Pressable key={c || 'all'} onPress={() => setCurrency(c || undefined)}>
               <Badge
                 label={c || t('allCurrencies')}

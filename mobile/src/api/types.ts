@@ -1,4 +1,4 @@
-export type Currency = 'USD' | 'THB';
+export type Currency = 'USD' | 'JPY';
 export type BudgetType = 'FIXED' | 'HOURLY';
 export type UserRole = 'CLIENT' | 'FREELANCER' | 'ADMIN';
 export type ProjectStatus = 'DRAFT' | 'PUBLISHED' | 'PAUSED' | 'IN_PROGRESS' | 'COMPLETED' | 'CLOSED' | 'ARCHIVED';

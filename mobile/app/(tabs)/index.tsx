@@ -11,6 +11,7 @@ import { ProposalCard } from '../../src/components/shared/ProposalCard';
 import { LoadingSpinner } from '../../src/components/ui/LoadingSpinner';
 import { useI18n } from '../../src/i18n/I18nProvider';
 import { Button } from '../../src/components/ui/Button';
+import { ArcherMark } from '../../src/components/shared/ArcherMark';
 
 export default function DashboardScreen() {
   const { user } = useAuth();
@@ -31,7 +32,10 @@ export default function DashboardScreen() {
       {/* Header */}
       <View className="px-4 py-4 bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 flex-row items-center justify-between">
         <View>
-          <Text className="text-xl font-bold text-indigo-600">Archer</Text>
+          <View className="flex-row items-center gap-2">
+            <ArcherMark size={30} />
+            <Text className="text-xl font-bold text-slate-900 dark:text-slate-100">Archer</Text>
+          </View>
           <Text className="text-slate-500 dark:text-slate-400 text-sm">Hi, {displayName.split(' ')[0]}</Text>
         </View>
         <View className="flex-row gap-3 items-center">

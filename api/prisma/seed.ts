@@ -33,9 +33,10 @@ async function main() {
     const categoryRows = await tx.category.findMany();
     for (let i = 0; i < 100; i++) {
       const displayName = nameFor(i + 50);
-      const user = await tx.user.upsert({ where: { email: `freelancer${i + 1}@archer.local` }, update: {}, create: { email: `freelancer${i + 1}@archer.local`, passwordHash: password, role: "FREELANCER", freelancerProfile: { create: { displayName, headline: `${skills[i % skills.length]} specialist`, bio: `Independent freelancer helping teams ship high-quality ${skills[i % skills.length]} work.`, location: cities[i % cities.length], timezone: "Asia/Bangkok", hourlyRateMinor: 2500 + (i % 8) * 1000, currency: i % 2 ? "THB" : "USD", availability: "AVAILABLE", experienceLevel: i % 3 === 0 ? "SENIOR" : "MID" } } } });
+      const user = await tx.user.upsert({ where: { email: `freelancer${i + 1}@archer.local` }, update: {}, create: { email: `freelancer${i + 1}@archer.local`, passwordHash: password, role: "FREELANCER", freelancerProfile: { create: { displayName, headline: `${skills[i % skills.length]} specialist`, bio: `Independent freelancer helping teams ship high-quality ${skills[i % skills.length]} work.`, location: cities[i % cities.length], timezone: "Asia/Bangkok", hourlyRateMinor: 2500 + (i % 8) * 1000, currency: i % 2 ? "JPY" : "USD", availability: "AVAILABLE", experienceLevel: i % 3 === 0 ? "SENIOR" : "MID" } } } });
       const profile = await tx.freelancerProfile.findUnique({ where: { userId: user.id } });
       if (profile) {
+        await tx.freelancerProfile.update({ where: { id: profile.id }, data: { currency: i % 2 ? "JPY" : "USD" } });
         for (let j = 0; j < 3; j++) {
           const skill = skillRows[(i + j) % skillRows.length];
           await tx.profileSkill.upsert({ where: { profileId_skillId: { profileId: profile.id, skillId: skill.id } }, update: {}, create: { profileId: profile.id, skillId: skill.id, proficiency: j === 0 ? "EXPERT" : "PROFICIENT" } });
@@ -46,9 +47,10 @@ async function main() {
     const clientRows = await tx.user.findMany({ where: { role: "CLIENT" }, select: { id: true } });
     for (let i = 0; i < 250; i++) {
       const category = categoryRows[i % categoryRows.length];
-      const currency = i % 2 === 0 ? "USD" : "THB";
+      const currency = i % 2 === 0 ? "USD" : "JPY";
       const status = i % 11 === 0 ? "DRAFT" : i % 13 === 0 ? "PAUSED" : i % 17 === 0 ? "COMPLETED" : "PUBLISHED";
-      const project = await tx.project.upsert({ where: { slug: slugFor(`${category.name} project ${i + 1}`, i) }, update: {}, create: { ownerId: clientRows[i % clientRows.length].id, categoryId: category.id, title: `${category.name} project ${i + 1}`, slug: slugFor(`${category.name} project ${i + 1}`, i), description: `Archer sample project ${i + 1}: looking for a thoughtful specialist to deliver dependable ${category.name.toLowerCase()} work for a growing team.`, budgetMinor: currency === "USD" ? 50000 + (i % 10) * 25000 : 1500000 + (i % 10) * 500000, currency, budgetType: i % 3 === 0 ? "HOURLY" : "FIXED", status, publishedAt: status === "PUBLISHED" ? new Date(Date.now() - i * 86400000) : null, deadline: new Date(Date.now() + (15 + (i % 60)) * 86400000) } });
+      const budgetMinor = currency === "USD" ? 50000 + (i % 10) * 25000 : 1500000 + (i % 10) * 500000;
+      const project = await tx.project.upsert({ where: { slug: slugFor(`${category.name} project ${i + 1}`, i) }, update: { currency, budgetMinor }, create: { ownerId: clientRows[i % clientRows.length].id, categoryId: category.id, title: `${category.name} project ${i + 1}`, slug: slugFor(`${category.name} project ${i + 1}`, i), description: `Archer sample project ${i + 1}: looking for a thoughtful specialist to deliver dependable ${category.name.toLowerCase()} work for a growing team.`, budgetMinor, currency, budgetType: i % 3 === 0 ? "HOURLY" : "FIXED", status, publishedAt: status === "PUBLISHED" ? new Date(Date.now() - i * 86400000) : null, deadline: new Date(Date.now() + (15 + (i % 60)) * 86400000) } });
       for (let j = 0; j < 3; j++) await tx.projectSkill.upsert({ where: { projectId_skillId: { projectId: project.id, skillId: skillRows[(i + j) % skillRows.length].id } }, update: {}, create: { projectId: project.id, skillId: skillRows[(i + j) % skillRows.length].id } });
     }
   });
