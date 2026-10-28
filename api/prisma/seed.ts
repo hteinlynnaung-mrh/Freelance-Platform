@@ -21,11 +21,11 @@ async function main() {
     for (const name of categories) await tx.category.upsert({ where: { name }, update: {}, create: { name, slug: slugFor(name, 1), description: `${name} projects and services` } });
     for (const name of skills) await tx.skill.upsert({ where: { name }, update: {}, create: { name, slug: name.toLowerCase().replace(/[^a-z0-9]+/g, "-") } });
 
-    await tx.user.upsert({ where: { email: "admin@archer.local" }, update: {}, create: { email: "admin@archer.local", passwordHash: password, role: "ADMIN", clientProfile: { create: { displayName: "Archer Admin", company: "Archer" } } } });
+    await tx.user.upsert({ where: { email: "admin@archer.local" }, update: { username: "admin" }, create: { email: "admin@archer.local", username: "admin", passwordHash: password, role: "ADMIN", clientProfile: { create: { displayName: "Archer Admin", company: "Archer" } } } });
 
     for (let i = 0; i < 50; i++) {
       const displayName = nameFor(i);
-      const user = await tx.user.upsert({ where: { email: `client${i + 1}@archer.local` }, update: {}, create: { email: `client${i + 1}@archer.local`, passwordHash: password, role: "CLIENT", clientProfile: { create: { displayName, company: `${displayName} Studio`, location: cities[i % cities.length], timezone: "Asia/Bangkok" } } } });
+      const user = await tx.user.upsert({ where: { email: `client${i + 1}@archer.local` }, update: { username: `client${i + 1}` }, create: { email: `client${i + 1}@archer.local`, username: `client${i + 1}`, passwordHash: password, role: "CLIENT", clientProfile: { create: { displayName, company: `${displayName} Studio`, location: cities[i % cities.length], timezone: "Asia/Bangkok" } } } });
       await tx.clientProfile.upsert({ where: { userId: user.id }, update: {}, create: { userId: user.id, displayName } });
     }
 
@@ -33,7 +33,7 @@ async function main() {
     const categoryRows = await tx.category.findMany();
     for (let i = 0; i < 100; i++) {
       const displayName = nameFor(i + 50);
-      const user = await tx.user.upsert({ where: { email: `freelancer${i + 1}@archer.local` }, update: {}, create: { email: `freelancer${i + 1}@archer.local`, passwordHash: password, role: "FREELANCER", freelancerProfile: { create: { displayName, headline: `${skills[i % skills.length]} specialist`, bio: `Independent freelancer helping teams ship high-quality ${skills[i % skills.length]} work.`, location: cities[i % cities.length], timezone: "Asia/Bangkok", hourlyRateMinor: 2500 + (i % 8) * 1000, currency: i % 2 ? "JPY" : "USD", availability: "AVAILABLE", experienceLevel: i % 3 === 0 ? "SENIOR" : "MID" } } } });
+      const user = await tx.user.upsert({ where: { email: `freelancer${i + 1}@archer.local` }, update: { username: `freelancer${i + 1}` }, create: { email: `freelancer${i + 1}@archer.local`, username: `freelancer${i + 1}`, passwordHash: password, role: "FREELANCER", freelancerProfile: { create: { displayName, headline: `${skills[i % skills.length]} specialist`, bio: `Independent freelancer helping teams ship high-quality ${skills[i % skills.length]} work.`, location: cities[i % cities.length], timezone: "Asia/Bangkok", hourlyRateMinor: 2500 + (i % 8) * 1000, currency: i % 2 ? "JPY" : "USD", availability: "AVAILABLE", experienceLevel: i % 3 === 0 ? "SENIOR" : "MID" } } } });
       const profile = await tx.freelancerProfile.findUnique({ where: { userId: user.id } });
       if (profile) {
         await tx.freelancerProfile.update({ where: { id: profile.id }, data: { currency: i % 2 ? "JPY" : "USD" } });
@@ -56,7 +56,7 @@ async function main() {
   });
 
   console.log("Seed complete. Demo password: ArcherDemo123!");
-  console.log("Admin: admin@archer.local | Client: client1@archer.local | Freelancer: freelancer1@archer.local");
+  console.log("Admin: admin@archer.local (admin) | Client: client1@archer.local (client1) | Freelancer: freelancer1@archer.local (freelancer1)");
 }
 
 main().catch((error) => { console.error(error); process.exitCode = 1; }).finally(async () => { await prisma.$disconnect(); });

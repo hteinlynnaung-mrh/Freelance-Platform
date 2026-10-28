@@ -15,6 +15,7 @@ This checklist reflects the current repository state. Checked items are implemen
 - [x] Web light/dark theme persistence and dark variants for audited landing/project/navigation surfaces.
 - [x] Web authenticated requests attach the access token.
 - [x] Web sign-in/register store the user and tokens, restore the navbar account, and provide sign-out.
+- [x] Unique account usernames with email-or-username sign-in and an `@username` navbar account label.
 - [x] Mobile restores the user, refreshes expired access tokens, and clears failed sessions.
 - [x] API routes for profiles, projects, saved projects, proposals, engagements, conversations, notifications, and reviews.
 - [x] API tests for health and request-boundary validation/authorization.

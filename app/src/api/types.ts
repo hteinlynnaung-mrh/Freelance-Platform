@@ -10,3 +10,21 @@ export interface Project {
 }
 export interface PagedProjects { data: Project[]; meta: { page: number; pageSize: number; total: number; pageCount: number }; }
 export interface ApiEnvelope<T> { data: T; }
+
+export type ProposalStatus = "SUBMITTED" | "SHORTLISTED" | "REJECTED" | "WITHDRAWN" | "ACCEPTED";
+
+export interface ProposalProject {
+  id: string; title: string; slug: string; description: string;
+  currency: Currency; budgetMinor: number; budgetType: BudgetType; status: string;
+  category: Category | null;
+}
+
+export interface Proposal {
+  id: string; projectId: string; freelancerId: string; coverLetter: string;
+  proposedAmountMinor: number; currency: Currency; estimatedDurationDays: number | null;
+  status: ProposalStatus; createdAt: string; updatedAt: string; project: ProposalProject;
+}
+
+export interface SubmitProposalInput {
+  coverLetter: string; proposedAmountMinor: number; currency: Currency; estimatedDurationDays?: number;
+}

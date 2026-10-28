@@ -33,7 +33,7 @@ export interface PortfolioItem {
 }
 
 export interface User {
-  id: string; email: string; role: UserRole; status: string;
+  id: string; email: string; username?: string | null; role: UserRole; status: string;
   clientProfile?: ClientProfile | null;
   freelancerProfile?: FreelancerProfile | null;
 }

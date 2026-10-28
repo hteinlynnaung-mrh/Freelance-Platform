@@ -76,9 +76,11 @@ Copy the appropriate example before changing environment-specific values. Never 
 
 The seed command creates demo accounts with the local-only password `ArcherDemo123!`:
 
-- `admin@archer.local`
-- `client1@archer.local`
-- `freelancer1@archer.local`
+- `admin@archer.local` — username `admin`
+- `client1@archer.local` — username `client1`
+- `freelancer1@archer.local` — username `freelancer1`
+
+Sign in on the web with the email address; the API also accepts the username as an identifier.
 
 The seed also creates 50 client accounts, 100 freelancer accounts, 20 skills, 8 categories, and 250 projects with a mix of published/non-published statuses and USD/JPY currencies.
 

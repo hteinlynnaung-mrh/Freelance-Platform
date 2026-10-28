@@ -12,6 +12,7 @@ interface AuthActions {
   register: (email: string, password: string, role: 'CLIENT' | 'FREELANCER', displayName: string) => Promise<void>;
   logout: () => Promise<void>;
   refreshUser: () => Promise<void>;
+  deleteAccount: (password?: string) => Promise<void>;
 }
 
 const AuthContext = createContext<(AuthState & AuthActions) | null>(null);
@@ -91,8 +92,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
+  const deleteAccount = useCallback(async (password?: string) => {
+    try {
+      await api('/api/v1/auth/me', {
+        method: 'DELETE',
+        body: password ? JSON.stringify({ password }) : undefined,
+      });
+    } finally {
+      await tokenStore.clear();
+      setUser(null);
+    }
+  }, []);
+
   return (
-    <AuthContext.Provider value={{ user, isLoading, isAuthenticated: !!user, login, register, logout, refreshUser }}>
+    <AuthContext.Provider value={{ user, isLoading, isAuthenticated: !!user, login, register, logout, refreshUser, deleteAccount }}>
       {children}
     </AuthContext.Provider>
   );

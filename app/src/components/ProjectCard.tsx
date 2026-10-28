@@ -28,7 +28,8 @@ export function ProjectCard({ project, featured = false }: { project: Project; f
     }
     saveMutation.mutate();
   };
-  return <Card className={cn("project-card-shadcn min-h-[310px] border-border/70 bg-card/95 p-0 shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl", featured && "featured-card-shadcn border-transparent bg-[var(--mint)]")}>
+
+  return <Card className="project-card-shadcn min-h-[310px] border-border/70 bg-card/95 p-0 shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl">
     <CardHeader className="gap-0 px-5 pb-0 pt-5">
       <div className="flex items-center justify-between gap-3">
         <Badge variant="secondary" className="rounded-full bg-primary/10 font-mono text-[10px] uppercase tracking-wide text-primary">{project.category ? localizeCategory(project.category.name, t) : t("independent")}</Badge>

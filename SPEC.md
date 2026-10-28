@@ -60,9 +60,9 @@ Expo SDK 52, Expo Router v4, React Native, NativeWind v4, TanStack React Query, 
 
 ### Authentication and sessions
 
-- API registration supports CLIENT and FREELANCER roles.
-- Sign-in returns a user, access token, and refresh token.
-- Web sign-in/register persist tokens and user data in browser localStorage. The navbar restores the account from storage or /api/v1/auth/me and provides sign-out.
+- API registration supports CLIENT and FREELANCER roles and assigns every account a unique username (3–30 letters, numbers, or underscores). When a client omits the username, the API derives a unique handle from the email so mobile and older clients keep working.
+- Sign-in accepts either `email` or `username` together with the password; `POST /api/v1/auth/login` returns the user (including `username`), an access token, and a refresh token.
+- Web sign-in/register persist tokens and user data in browser localStorage. The navbar restores the account from storage or /api/v1/auth/me, shows `@username` (falling back to the email for accounts without one), and provides sign-out.
 - Mobile sign-in/register persist tokens in Expo Secure Store, restore /auth/me, refresh an expired access token once, and clear the session when refresh fails.
 - API authorization uses bearer access tokens, role checks, and ownership checks.
 - Web route protection, role-aware navigation, and automatic web token refresh are not yet complete; API protection remains authoritative.

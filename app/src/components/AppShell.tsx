@@ -1,7 +1,7 @@
 import { Link, NavLink } from "react-router-dom";
 import { ArrowUpRight, Menu, Moon, Search, Sun } from "lucide-react";
-import { useEffect, useState } from "react";
-import { clearAuthSession, getCurrentUser, getStoredUser, signOut, type AuthUser } from "../api/client";
+import { useState } from "react";
+import { useAuth } from "../auth/AuthProvider";
 import { useI18n } from "../i18n/I18nProvider";
 import { useTheme } from "../theme/ThemeProvider";
 import { ArcherMark } from "./ArcherMark";
@@ -9,34 +9,12 @@ import { Button } from "./ui/Button";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [account, setAccount] = useState<AuthUser | null>(() => getStoredUser());
+  const { user: account, logout } = useAuth();
   const { language, setLanguage, t } = useI18n();
   const { theme, toggleTheme } = useTheme();
 
-  useEffect(() => {
-    const syncAccount = () => setAccount(getStoredUser());
-    const accessToken = localStorage.getItem("archer_access_token");
-    const storedUser = getStoredUser();
-
-    if (accessToken && !storedUser) {
-      getCurrentUser()
-        .then(({ data }) => {
-          localStorage.setItem("archer_user", JSON.stringify(data.user));
-          setAccount(data.user);
-        })
-        .catch(() => {
-          clearAuthSession();
-          setAccount(null);
-        });
-    }
-
-    window.addEventListener("archer-auth-changed", syncAccount);
-    return () => window.removeEventListener("archer-auth-changed", syncAccount);
-  }, []);
-
   async function handleSignOut() {
-    await signOut();
-    setAccount(null);
+    await logout();
   }
 
   return <div className="app-shell">
@@ -44,8 +22,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <Link to="/" className="brand" aria-label="Archer home"><ArcherMark /><span>Archer</span></Link>
       <nav className={menuOpen ? "nav-links nav-open" : "nav-links"}>
         <NavLink to="/projects" end>{t("findWork")}</NavLink>
+        {account?.role === "FREELANCER" && <NavLink to="/account/applications">{t("myApplications")}</NavLink>}
+        {account?.role === "CLIENT" && <NavLink to="/dashboard">{t("dashboard")}</NavLink>}
         <Link to="/#how-it-works">{t("howItWorks")}</Link>
-        <Link to="/#talent">{t("forTalent")}</Link>
+        {account && <NavLink to="/account/settings">{t("accountSettings")}</NavLink>}
       </nav>
       <div className="header-actions">
         <Button variant="outline" size="icon-sm" className="theme-toggle" type="button" onClick={toggleTheme} aria-pressed={theme === "dark"} aria-label={theme === "dark" ? t("switchToLight") : t("switchToDark")} title={theme === "dark" ? t("switchToLight") : t("switchToDark")}>
@@ -60,7 +40,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </label>
         <button className="icon-button mobile-menu" onClick={() => setMenuOpen(!menuOpen)} aria-label={t("toggleMenu")}><Menu size={20} /></button>
         {account ? <>
-          <span className="header-account" title={account.email}>{account.email}</span>
+          <Link to="/account/settings" className="header-account" title={account.email}>{account.username ? `@${account.username}` : account.email}</Link>
           <button type="button" className="header-signout" onClick={handleSignOut}>{t("signOut")}</button>
         </> : <>
           <Link to="/login" className="header-login">{t("signIn")}</Link>
