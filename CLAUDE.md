@@ -16,7 +16,7 @@ Read and follow AGENTS.md first. This file keeps Claude-compatible tooling align
 - Keep validation and authorization in the API.
 - Keep USD and JPY explicit, stored as integer minor units. Do not imply payment processing or automatic currency conversion.
 - Use the existing English/Japanese i18n providers and dictionaries for user-facing copy.
-- Follow .cursor/skills/burmese-i18n/SKILL.md for the project locale and typography rules; the product UI itself is English/Japanese.
+- Follow the locale and typography rules in AGENTS.md; the product UI is English/Japanese only.
 - Preserve dark-mode variants for all web surfaces and use dark: variants in mobile NativeWind classes.
 - Do not commit secrets or rewrite unrelated user changes.
 

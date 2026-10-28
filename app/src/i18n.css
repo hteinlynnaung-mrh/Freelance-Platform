@@ -12,7 +12,8 @@ body { line-height: var(--body-line-height); }
 [data-language="ja"] input,
 [data-language="ja"] select,
 [data-language="ja"] label { letter-spacing: normal; }
-[data-language="ja"] button,
+/* Icon-only controls keep their own square size; the Japanese text rule must not stretch them. */
+[data-language="ja"] button:not(.theme-toggle),
 [data-language="ja"] input,
 [data-language="ja"] select { min-height: 2.75rem; }
 @media (max-width: 800px) { .language-switcher span { display: none; } .language-switcher select { max-width: 63px; } }

@@ -18,8 +18,7 @@ This is a living contract for the code in this repository. Update it when routes
     ├── mobile/    Expo React Native application
     ├── README.md  repository setup and runbook
     ├── SPEC.md    architecture and product contract
-    ├── TODO.md    implementation status and roadmap
-    └── .agents/   project-local agent skills
+    └── TODO.md    implementation status and roadmap
 
 Each project has its own package manifest, lockfile, TypeScript configuration, environment example, and development command. There is no Docker-based runtime.
 
