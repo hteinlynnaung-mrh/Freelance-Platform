@@ -108,10 +108,12 @@ Run the narrowest relevant checks after changes:
 ```bash
 npm --prefix app run typecheck
 npm --prefix app run build
+npm --prefix app test
 npm --prefix api run typecheck
 npm --prefix api run build
 npm --prefix api test
 npm --prefix mobile run typecheck
+npm --prefix mobile test
 ```
 
 For database changes, regenerate Prisma and apply the migration/seed commands against a development database only. Do not run seed or destructive database commands against production data.

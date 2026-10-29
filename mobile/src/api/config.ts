@@ -85,7 +85,7 @@ export function resolveApiUrl(): string {
 
 export const API_URL = resolveApiUrl();
 
-if (__DEV__) {
+if (typeof __DEV__ !== 'undefined' && __DEV__) {
   // Helpful when debugging "network request failed" on a device or emulator.
   console.log(`[api] base URL: ${API_URL}`);
   if (API_URL.includes(TUNNEL_HOSTNAME_SUFFIX)) {
