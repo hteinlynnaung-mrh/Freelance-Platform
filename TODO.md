@@ -17,6 +17,8 @@ This checklist reflects the current repository state. Checked items are implemen
 - [x] Web sign-in/register store the user and tokens, restore the navbar account, and provide sign-out.
 - [x] Unique account usernames with email-or-username sign-in and an `@username` navbar account label.
 - [x] Mobile restores the user, refreshes expired access tokens, and clears failed sessions.
+- [x] Mobile resolves the API base URL per runtime: localhost on iOS/web, 10.0.2.2 on the Android emulator, and the Metro dev-server LAN IP on physical devices, with EXPO_PUBLIC_API_URL as an override.
+- [x] Mobile light/dark/system appearance with a persisted three-way toggle in Profile, a quick moon/sun button on sign-in, and dark variants across screens, cards, forms, tab bar, and status bar.
 - [x] API routes for profiles, projects, saved projects, proposals, engagements, conversations, notifications, and reviews.
 - [x] API tests for health and request-boundary validation/authorization.
 - [x] Docker files removed; local development uses Node/npm commands.

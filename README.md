@@ -12,7 +12,7 @@ The current MVP includes public project discovery, project details, authenticati
 
 - Web: React 18, TypeScript, Vite, React Router, TanStack React Query, Tailwind/shadcn-compatible UI, English/Japanese i18n
 - API: Node.js 24, Express 5, TypeScript, Prisma 7, SQLite, Zod, JWT access tokens, rotating hashed refresh tokens
-- Mobile: Expo SDK 52, Expo Router, React Native, NativeWind, TanStack React Query, Expo Secure Store
+- Mobile: Expo SDK 58, Expo Router, React Native, NativeWind, TanStack React Query, Expo Secure Store, light/dark/system appearance
 - Supported listing currencies: US Dollar (`USD`) and Japanese Yen (`JPY`/`¥`)
 
 ## Requirements
@@ -60,7 +60,10 @@ Open `http://localhost:5000`. Vite proxies `/api` requests to `http://localhost:
 npm --prefix mobile run dev
 ```
 
-Use `http://localhost:5001` for a simulator/emulator. For a physical device, set `EXPO_PUBLIC_API_URL` in `mobile/.env` to the computer's LAN IP, for example `http://192.168.1.100:5001`, then scan the Expo QR code.
+`mobile/.env` can stay empty: the app derives the API host at runtime — `http://localhost:5001`
+on the iOS Simulator and `http://10.0.2.2:5001` on the Android emulator — and reuses the Metro
+dev-server host (your LAN IP) on a physical device. Set `EXPO_PUBLIC_API_URL` only for an API that
+is not running on the machine hosting Metro, for example `http://192.168.1.100:5001`.
 
 There are no Docker or container commands required by this repository.
 

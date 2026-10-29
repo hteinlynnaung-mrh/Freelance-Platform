@@ -69,7 +69,7 @@ export default function EngagementDetailScreen() {
 
         {/* Budget */}
         <View className="gap-1">
-          <Text className="text-sm text-slate-500">Budget</Text>
+          <Text className="text-sm text-slate-500 dark:text-slate-400">Budget</Text>
           <CurrencyBadge amountMinor={engagement.proposal.proposedAmountMinor} currency={engagement.proposal.currency} />
           {engagement.proposal.estimatedDurationDays && (
             <Text className="text-xs text-slate-400">{engagement.proposal.estimatedDurationDays} days</Text>

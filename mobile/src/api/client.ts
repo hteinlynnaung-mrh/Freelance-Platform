@@ -1,11 +1,5 @@
 import * as SecureStore from 'expo-secure-store';
-import Constants from 'expo-constants';
-
-const API_URL = (
-  process.env.EXPO_PUBLIC_API_URL ||
-  Constants.expoConfig?.extra?.apiUrl ||
-  'http://localhost:5001'
-).replace(/\/$/, '');
+import { API_URL } from './config';
 
 export { API_URL };
 

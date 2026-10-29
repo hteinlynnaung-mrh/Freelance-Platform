@@ -14,7 +14,7 @@ export default function MessageThreadScreen() {
   const { t } = useI18n();
   const { user } = useAuth();
   const [body, setBody] = useState('');
-  const inputRef = useRef<TextInput>(null);
+  const inputRef = useRef<React.ComponentRef<typeof TextInput>>(null);
   const flatListRef = useRef<FlatList>(null);
 
   const { data: convData } = useConversations();

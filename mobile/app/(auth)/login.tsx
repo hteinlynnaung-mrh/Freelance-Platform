@@ -1,9 +1,11 @@
 import { Link, useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuth } from '../../src/auth/AuthContext';
 import { Button } from '../../src/components/ui/Button';
 import { Input } from '../../src/components/ui/Input';
+import { ThemeIconButton } from '../../src/components/ui/ThemeToggle';
 import { ArcherMark } from '../../src/components/shared/ArcherMark';
 import { useI18n } from '../../src/i18n/I18nProvider';
 
@@ -11,6 +13,7 @@ export default function LoginScreen() {
   const { login } = useAuth();
   const { t, isJapanese } = useI18n();
   const router = useRouter();
+  const insets = useSafeAreaInsets();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -32,6 +35,9 @@ export default function LoginScreen() {
 
   return (
     <KeyboardAvoidingView className="flex-1 bg-white dark:bg-slate-900" behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      <View className="absolute bottom-8 right-5 z-10" style={{ bottom: insets.bottom + 24 }}>
+        <ThemeIconButton />
+      </View>
       <ScrollView contentContainerClassName="flex-grow px-6 py-12 justify-center gap-6" keyboardShouldPersistTaps="handled">
         {/* Logo / brand */}
         <View className="items-center gap-2 mb-4">
@@ -68,7 +74,7 @@ export default function LoginScreen() {
         {/* Demo hint */}
         <View className="bg-slate-50 dark:bg-slate-800 rounded-xl p-3">
           <Text className="text-xs text-slate-500 dark:text-slate-400 text-center">
-            Demo: admin@archer.dev / freelancer@archer.dev / client@archer.dev · password: password123
+            {t('demoCredentials')}
           </Text>
         </View>
 

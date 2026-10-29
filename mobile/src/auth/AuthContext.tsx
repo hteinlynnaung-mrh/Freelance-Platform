@@ -24,8 +24,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const fetchMe = useCallback(async (): Promise<User | null> => {
     try {
-      const res = await api<{ data: User }>('/api/v1/auth/me');
-      return res.data;
+      // /api/v1/auth/me wraps the user: { data: { user } }
+      const res = await api<{ data: { user: User } }>('/api/v1/auth/me');
+      return res.data.user;
     } catch {
       return null;
     }

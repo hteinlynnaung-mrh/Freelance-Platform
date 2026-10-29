@@ -58,7 +58,7 @@ export default function ProjectDetailScreen() {
 
         {/* Budget */}
         <View className="bg-slate-50 dark:bg-slate-800 rounded-2xl p-4 gap-2">
-          <Text className="text-sm font-medium text-slate-500">{t('projectBudget')}</Text>
+          <Text className="text-sm font-medium text-slate-500 dark:text-slate-400">{t('projectBudget')}</Text>
           <CurrencyBadge amountMinor={project.budgetMinor} currency={project.currency} type={project.budgetType} />
           <Text className="text-xs text-slate-400">{project.budgetType === 'FIXED' ? t('fixedPrice') : t('perHour')}</Text>
         </View>
@@ -66,7 +66,7 @@ export default function ProjectDetailScreen() {
         {/* Deadline */}
         {project.deadline && (
           <View className="flex-row items-center gap-2">
-            <Text className="text-sm text-slate-500">{t('timeline')}:</Text>
+            <Text className="text-sm text-slate-500 dark:text-slate-400">{t('timeline')}:</Text>
             <Text className="text-sm font-medium text-slate-700 dark:text-slate-300">
               {new Date(project.deadline).toLocaleDateString()}
             </Text>
@@ -76,7 +76,7 @@ export default function ProjectDetailScreen() {
         {/* Skills */}
         {project.skills.length > 0 && (
           <View className="gap-2">
-            <Text className="text-sm font-medium text-slate-500">{t('skills')}</Text>
+            <Text className="text-sm font-medium text-slate-500 dark:text-slate-400">{t('skills')}</Text>
             <View className="flex-row flex-wrap gap-2">
               {project.skills.map((s) => <Badge key={s.skill.id} label={s.skill.name} />)}
             </View>
@@ -85,7 +85,7 @@ export default function ProjectDetailScreen() {
 
         {/* Description */}
         <View className="gap-2">
-          <Text className="text-sm font-medium text-slate-500">{t('aboutProject')}</Text>
+          <Text className="text-sm font-medium text-slate-500 dark:text-slate-400">{t('aboutProject')}</Text>
           <Text className="text-slate-700 dark:text-slate-300 leading-relaxed">{project.description}</Text>
         </View>
 

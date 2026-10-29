@@ -6,7 +6,7 @@ Read and follow AGENTS.md first. This file keeps Claude-compatible tooling align
 
 - app/ is the React/Vite web client on port 5000.
 - api/ is the Express/Prisma 7/SQLite service on port 5001.
-- mobile/ is the Expo SDK 52/React Native client. Mobile is in scope and must not be removed or treated as obsolete.
+- mobile/ is the Expo SDK 58/React Native client. Mobile is in scope and must not be removed or treated as obsolete.
 - The three projects communicate through /api/v1; keep their package manifests and development commands independent.
 - Docker/container files are intentionally not part of the project.
 

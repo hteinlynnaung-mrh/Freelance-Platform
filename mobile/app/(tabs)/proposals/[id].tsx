@@ -83,9 +83,9 @@ export default function ProposalDetailScreen() {
           <Badge label={proposal.status} color={proposal.status === 'ACCEPTED' ? 'green' : proposal.status === 'REJECTED' ? 'red' : 'indigo'} />
         </View>
         <CurrencyBadge amountMinor={proposal.proposedAmountMinor} currency={proposal.currency} />
-        {proposal.estimatedDurationDays && <Text className="text-sm text-slate-500">{proposal.estimatedDurationDays} days</Text>}
+        {proposal.estimatedDurationDays && <Text className="text-sm text-slate-500 dark:text-slate-400">{proposal.estimatedDurationDays} days</Text>}
         <View className="gap-1">
-          <Text className="text-sm font-medium text-slate-500">{t('coverLetter')}</Text>
+          <Text className="text-sm font-medium text-slate-500 dark:text-slate-400">{t('coverLetter')}</Text>
           <Text className="text-slate-700 dark:text-slate-300 leading-relaxed">{proposal.coverLetter}</Text>
         </View>
         {canWithdraw && (

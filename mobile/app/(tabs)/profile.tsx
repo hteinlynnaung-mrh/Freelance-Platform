@@ -9,6 +9,7 @@ import { Badge } from '../../src/components/ui/Badge';
 import { Button } from '../../src/components/ui/Button';
 import { Input } from '../../src/components/ui/Input';
 import { LoadingSpinner } from '../../src/components/ui/LoadingSpinner';
+import { ThemeToggle } from '../../src/components/ui/ThemeToggle';
 import { useI18n } from '../../src/i18n/I18nProvider';
 
 export default function ProfileScreen() {
@@ -85,19 +86,19 @@ export default function ProfileScreen() {
             <View className="gap-4">
               {fp?.headline && (
                 <View className="gap-1">
-                  <Text className="text-sm font-medium text-slate-500">{t('headline')}</Text>
+                  <Text className="text-sm font-medium text-slate-500 dark:text-slate-400">{t('headline')}</Text>
                   <Text className={`text-slate-700 dark:text-slate-300 ${isJapanese ? 'leading-relaxed' : ''}`}>{fp.headline}</Text>
                 </View>
               )}
               {(fp?.bio ?? cp?.bio) && (
                 <View className="gap-1">
-                  <Text className="text-sm font-medium text-slate-500">{t('bio')}</Text>
+                  <Text className="text-sm font-medium text-slate-500 dark:text-slate-400">{t('bio')}</Text>
                   <Text className={`text-slate-700 dark:text-slate-300 leading-relaxed`}>{fp?.bio ?? cp?.bio}</Text>
                 </View>
               )}
               {fp?.skills && fp.skills.length > 0 && (
                 <View className="gap-2">
-                  <Text className="text-sm font-medium text-slate-500">{t('skills')}</Text>
+                  <Text className="text-sm font-medium text-slate-500 dark:text-slate-400">{t('skills')}</Text>
                   <View className="flex-row flex-wrap gap-2">
                     {fp.skills.map((s: { skill: { id: string; name: string } }) => <Badge key={s.skill.id} label={s.skill.name} />)}
                   </View>
@@ -108,7 +109,7 @@ export default function ProfileScreen() {
 
           {/* Language toggle */}
           <View className="bg-white dark:bg-slate-800 rounded-2xl p-4 gap-3">
-            <Text className="text-sm font-medium text-slate-500">{t('language')}</Text>
+            <Text className="text-sm font-medium text-slate-500 dark:text-slate-400">{t('language')}</Text>
             <View className="flex-row gap-3">
               {(['en', 'ja'] as const).map((lang) => (
                 <Pressable
@@ -120,12 +121,18 @@ export default function ProfileScreen() {
                       : 'border-slate-200 dark:border-slate-600'
                   }`}
                 >
-                  <Text className={language === lang ? 'text-indigo-700 dark:text-indigo-300 font-semibold' : 'text-slate-500'}>
+                  <Text className={language === lang ? 'text-indigo-700 dark:text-indigo-300 font-semibold' : 'text-slate-500 dark:text-slate-400'}>
                     {lang === 'en' ? t('english') : t('japanese')}
                   </Text>
                 </Pressable>
               ))}
             </View>
+          </View>
+
+          {/* Appearance toggle */}
+          <View className="bg-white dark:bg-slate-800 rounded-2xl p-4 gap-3">
+            <Text className="text-sm font-medium text-slate-500 dark:text-slate-400">{t('appearance')}</Text>
+            <ThemeToggle />
           </View>
 
           {/* Sign out */}

@@ -45,7 +45,7 @@ export default function FreelancerDetailScreen() {
         {/* Bio */}
         {profile.bio && (
           <View className="gap-1">
-            <Text className="text-sm font-medium text-slate-500">{t('bio')}</Text>
+            <Text className="text-sm font-medium text-slate-500 dark:text-slate-400">{t('bio')}</Text>
             <Text className="text-slate-700 dark:text-slate-300 leading-relaxed">{profile.bio}</Text>
           </View>
         )}
@@ -53,7 +53,7 @@ export default function FreelancerDetailScreen() {
         {/* Skills */}
         {profile.skills.length > 0 && (
           <View className="gap-2">
-            <Text className="text-sm font-medium text-slate-500">{t('skills')}</Text>
+            <Text className="text-sm font-medium text-slate-500 dark:text-slate-400">{t('skills')}</Text>
             <View className="flex-row flex-wrap gap-2">
               {profile.skills.map((s) => <Badge key={s.skill.id} label={s.skill.name} />)}
             </View>
@@ -65,13 +65,13 @@ export default function FreelancerDetailScreen() {
           <View className="bg-slate-50 dark:bg-slate-800 rounded-2xl p-4 gap-3">
             {profile.availability && (
               <View className="flex-row justify-between">
-                <Text className="text-sm text-slate-500">{t('availability')}</Text>
+                <Text className="text-sm text-slate-500 dark:text-slate-400">{t('availability')}</Text>
                 <Text className="text-sm font-medium text-slate-700 dark:text-slate-300">{profile.availability}</Text>
               </View>
             )}
             {profile.experienceLevel && (
               <View className="flex-row justify-between">
-                <Text className="text-sm text-slate-500">{t('experienceLevel')}</Text>
+                <Text className="text-sm text-slate-500 dark:text-slate-400">{t('experienceLevel')}</Text>
                 <Text className="text-sm font-medium text-slate-700 dark:text-slate-300">{profile.experienceLevel}</Text>
               </View>
             )}
@@ -81,11 +81,11 @@ export default function FreelancerDetailScreen() {
         {/* Portfolio */}
         {profile.portfolioItems.length > 0 && (
           <View className="gap-3">
-            <Text className="text-sm font-medium text-slate-500">{t('portfolio')}</Text>
+            <Text className="text-sm font-medium text-slate-500 dark:text-slate-400">{t('portfolio')}</Text>
             {profile.portfolioItems.map((item) => (
               <View key={item.id} className="bg-slate-50 dark:bg-slate-800 rounded-xl p-4 gap-1">
                 <Text className="font-semibold text-slate-900 dark:text-slate-100">{item.title}</Text>
-                {item.description && <Text className="text-sm text-slate-500">{item.description}</Text>}
+                {item.description && <Text className="text-sm text-slate-500 dark:text-slate-400">{item.description}</Text>}
                 {item.externalUrl && <Text className="text-sm text-indigo-500">{item.externalUrl}</Text>}
               </View>
             ))}

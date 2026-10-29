@@ -15,7 +15,7 @@
 - Website: npm run dev in app/; Vite serves port 5000 and proxies /api to port 5001.
 - API: npm run dev in api/; Express serves port 5001.
 - Mobile: npm run dev in mobile/; use Expo Go or press i/a for a simulator.
-- Set EXPO_PUBLIC_API_URL in mobile/.env to the machine LAN IP for a physical device. Use http://localhost:5001 for simulators/emulators.
+- Leave EXPO_PUBLIC_API_URL empty in mobile/.env so the app derives the API host from the Metro dev server (localhost for iOS/web, 10.0.2.2 for the Android emulator, the LAN IP for a physical device). Set it explicitly only for an API not running on the Metro host.
 - Keep app/.env VITE_API_URL empty for the local Vite proxy unless a remote API is intentional.
 - Do not commit secrets. Use .env.example files as templates.
 
@@ -30,6 +30,7 @@
 - Keep user-visible web and mobile copy in the locale dictionaries and use the existing i18n providers.
 - Supported UI locales are English and Japanese. Japanese copy needs natural vertical space, relaxed line height where needed, no custom letter-spacing, and no fixed heights that clip glyphs.
 - Web theme changes must work for both data-theme="dark" and the dark class. Check cards, navigation, forms, buttons, popovers, and mapped lists for contrast in both themes.
+- Mobile appearance must work in light and dark: use paired classes (bg-white dark:bg-slate-900, text-slate-900 dark:text-slate-100) and verify through the in-app Light/Dark/System switch, including the tab bar and status bar.
 - Web auth uses browser localStorage; mobile auth uses expo-secure-store. Never log access or refresh tokens.
 
 ## API boundaries

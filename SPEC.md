@@ -46,7 +46,7 @@ Express 5, TypeScript, Helmet, CORS, JSON request limits, request IDs, Prisma 7 
 
 ### Mobile: mobile/
 
-Expo SDK 52, Expo Router v4, React Native, NativeWind v4, TanStack React Query, English/Japanese i18n, and Expo Secure Store. EXPO_PUBLIC_API_URL selects the API address and defaults to http://localhost:5001.
+Expo SDK 58, Expo Router, React Native, NativeWind v4, TanStack React Query, English/Japanese i18n, and Expo Secure Store. EXPO_PUBLIC_API_URL optionally overrides the API address; when empty, mobile/src/api/config.ts derives the host from the Metro dev server (localhost on iOS/web, 10.0.2.2 on the Android emulator, the LAN IP on a physical device) and the API port defaults to 5001. Development clients are Expo Go for SDK 58 on both simulator and emulator. Appearance is a persisted Light/Dark/System switch (Profile tab and sign-in screen) backed by src/theme/ThemeProvider.tsx and NativeWind's colorScheme API.
 
 ## 4. Implemented product behavior
 
