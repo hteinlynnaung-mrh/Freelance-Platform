@@ -35,7 +35,7 @@ export default function LoginScreen() {
 
   return (
     <KeyboardAvoidingView className="flex-1 bg-white dark:bg-slate-900" behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-      <View className="absolute bottom-8 right-5 z-10" style={{ bottom: insets.bottom + 24 }}>
+      <View className="absolute right-5 z-10" style={{ top: insets.top + 12 }}>
         <ThemeIconButton />
       </View>
       <ScrollView contentContainerClassName="flex-grow px-6 py-12 justify-center gap-6" keyboardShouldPersistTaps="handled">
