@@ -5,6 +5,7 @@ Archer is a freelance marketplace foundation for connecting clients with indepen
 - `app/` — React/Vite website
 - `api/` — Express/Prisma/SQLite API
 - `mobile/` — Expo React Native app
+- `mcp/` — MCP (Streamable HTTP) server that lets AI agents register, log in, and post projects through the API
 
 The current MVP includes public project discovery, project details, authentication, saved projects, profiles, proposals, engagements, conversations, notifications, reviews, and seeded demo data. Payment processing, escrow, payouts, invoices, and automatic exchange-rate conversion are intentionally out of scope.
 
@@ -12,6 +13,7 @@ The current MVP includes public project discovery, project details, authenticati
 
 - Web: React 18, TypeScript, Vite, React Router, TanStack React Query, Tailwind/shadcn-compatible UI, English/Japanese i18n
 - API: Node.js 24, Express 5, TypeScript, Prisma 7, SQLite, Zod, JWT access tokens, rotating hashed refresh tokens
+- MCP: Node.js 24, official MCP TypeScript SDK v2, Streamable HTTP on port 5002, in-memory session/token store
 - Mobile: Expo SDK 58, Expo Router, React Native, NativeWind, TanStack React Query, Expo Secure Store, light/dark/system appearance
 - Supported listing currencies: US Dollar (`USD`) and Japanese Yen (`JPY`/`¥`)
 
@@ -72,6 +74,7 @@ There are no Docker or container commands required by this repository.
 - `api/.env.example` — API port, SQLite URL, JWT secret, token lifetimes, and CORS origins
 - `app/.env.example` — optional `VITE_API_URL`
 - `mobile/.env.example` — `EXPO_PUBLIC_API_URL`
+- `mcp/.env.example` — Archer API base URL, MCP bind host and port
 
 Copy the appropriate example before changing environment-specific values. Never commit real secrets. The API requires a development `JWT_ACCESS_SECRET` of at least 32 characters.
 
@@ -126,3 +129,4 @@ For database changes, regenerate Prisma and apply the migration/seed commands ag
 - [api/README.md](api/README.md) — API setup and route inventory
 - [app/README.md](app/README.md) — web-specific setup
 - [mobile/README.md](mobile/README.md) — mobile-specific setup
+- [mcp/README.md](mcp/README.md) — MCP server setup and agent configuration

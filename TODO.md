@@ -22,6 +22,7 @@ This checklist reflects the current repository state. Checked items are implemen
 - [x] API routes for profiles, projects, saved projects, proposals, engagements, conversations, notifications, and reviews.
 - [x] API tests for health and request-boundary validation/authorization.
 - [x] Docker files removed; local development uses Node/npm commands.
+- [x] MCP server in mcp/ exposing archer_register, archer_login, archer_whoami, archer_logout, and archer_post_project over the Streamable HTTP transport, with in-memory session tokens and transparent refresh-token rotation.
 
 ## Highest-priority unfinished work
 
