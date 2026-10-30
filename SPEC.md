@@ -111,6 +111,8 @@ Lifecycle transitions and ownership are checked in the API. A freelancer can sub
 
 All API resources use JSON and are mounted under /api/v1. Successful responses generally use a data envelope; paged project results also include meta. Errors use error.code, error.message, and optional error.details.
 
+Per-endpoint request/response details, auth requirements, field constraints, and status codes are documented in [API.md](API.md). Keep that file in sync with every route change.
+
 ### Health
 
 - GET /

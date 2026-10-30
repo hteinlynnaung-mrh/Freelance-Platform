@@ -6,6 +6,8 @@ Independent Express API for the Archer freelance marketplace platform.
 
 The Archer API is an independent Node.js/Express service providing the versioned `/api/v1` HTTP REST contract. It handles authentication, user profiles, project marketplace discovery, proposals, engagements, reviews, notifications, and reference data.
 
+For the complete per-endpoint HTTP reference (request bodies, auth, status codes, field limits), see [API.md](../API.md).
+
 ## Technology Stack
 
 - **Runtime**: Node.js 24 (see `.nvmrc` — Node 25 is not supported by Prisma 7)

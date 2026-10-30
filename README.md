@@ -120,6 +120,7 @@ For database changes, regenerate Prisma and apply the migration/seed commands ag
 
 ## Further documentation
 
+- [API.md](API.md) — complete agent-ready HTTP reference for the `/api/v1` contract
 - [SPEC.md](SPEC.md) — current architecture, API contract, domain rules, and MVP boundaries
 - [TODO.md](TODO.md) — implemented work, partial features, and remaining roadmap
 - [api/README.md](api/README.md) — API setup and route inventory
