@@ -13,15 +13,16 @@ This is a living contract for the code in this repository. Update it when routes
 ## 2. Repository structure
 
     .
-    ├── app/       React + Vite website
-    ├── api/       Express + Prisma + SQLite service
-    ├── mobile/    Expo React Native application
-    ├── mcp/       MCP Streamable HTTP server for AI agents (register, login, post project)
-    ├── README.md  repository setup and runbook
-    ├── SPEC.md    architecture and product contract
-    └── TODO.md    implementation status and roadmap
+    ├── app/        React + Vite website
+    ├── api/        Express + Prisma + SQLite service (api/API.md holds the HTTP contract)
+    ├── mobile/     Expo React Native application
+    ├── README.md   repository setup and runbook
+    ├── SPEC.md     architecture and product contract
+    ├── TODO.md     implementation status and roadmap
+    ├── AGENTS.md   contributor instructions for AI agents and humans
+    └── CLAUDE.md   Claude-compatible pointer to AGENTS.md conventions
 
-Each project has its own package manifest, lockfile, TypeScript configuration, environment example, and development command. There is no Docker-based runtime.
+Each project has its own package manifest, lockfile, TypeScript configuration, environment example, and development command. There is no Docker-based runtime and the projects are not npm workspaces; the root package.json has no orchestration scripts.
 
 ## 3. Technology and runtime
 
@@ -35,9 +36,13 @@ Routes mounted by app/src/App.tsx:
 | --- | --- |
 | / | Landing page with hero, showcase, calls to action, and feature sections |
 | /projects | Searchable project marketplace with category/currency filters and paged results |
-| /projects/:id | Published project detail and apply entry point |
+| /projects/:id | Published project detail with the freelancer apply form (amount, cover letter, duration) |
 | /login | Email/password sign-in |
 | /register | Client/freelancer registration |
+| /account/applications | Protected (FREELANCER): list of the signed-in freelancer's proposals with status |
+| /account/settings | Protected: account overview (email, username, role) and delete-account confirmation; /account redirects here |
+| /dashboard | Temporary authenticated placeholder that redirects by role; not a real dashboard yet |
+| * | Redirects to / |
 
 The web client uses the Vite /api proxy locally. VITE_API_URL may point at a remote API when intentionally configured.
 
@@ -49,10 +54,6 @@ Express 5, TypeScript, Helmet, CORS, JSON request limits, request IDs, Prisma 7 
 
 Expo SDK 58, Expo Router, React Native, NativeWind v4, TanStack React Query, English/Japanese i18n, and Expo Secure Store. EXPO_PUBLIC_API_URL optionally overrides the API address; when empty, mobile/src/api/config.ts derives the host from the Metro dev server (localhost on iOS/web, 10.0.2.2 on the Android emulator, the LAN IP on a physical device) and the API port defaults to 5001. Development clients are Expo Go for SDK 58 on both simulator and emulator. Appearance is a persisted Light/Dark/System switch (Profile tab and sign-in screen) backed by src/theme/ThemeProvider.tsx and NativeWind's colorScheme API.
 
-### MCP: mcp/
-
-Official MCP TypeScript SDK v2 serving the Streamable HTTP transport on port 5002 at /mcp. Five tools (archer_register, archer_login, archer_whoami, archer_logout, archer_post_project) proxy API.md's /api/v1 contract; tokens are kept in an in-memory store keyed by a caller-chosen session label and never echoed back to callers, access tokens are transparently refreshed via refresh-token rotation, and loopback binds compose localhost Host/Origin guards in front of the handler. Per-endpoint details live in mcp/README.md.
-
 ## 4. Implemented product behavior
 
 ### Public marketplace
@@ -61,7 +62,8 @@ Official MCP TypeScript SDK v2 serving the Streamable HTTP transport on port 500
 - Web results start with six cards and can expand to the API maximum of 50; the control changes to View less when expanded.
 - Project cards display the stored currency symbol. JPY uses ¥ with no decimal places; USD uses $ with no decimal places in the current UI.
 - Authenticated users can save or unsave projects. Guests are sent to sign-in with the intended project path.
-- Mobile supports project search, currency/category filtering, details, and save/unsave mutations.
+- The web detail page includes a freelancer apply form (amount, cover letter, optional duration) that submits a proposal and links to `/account/applications`; sign-in state and existing-proposal status are shown in place of the form.
+- Mobile supports project search, currency/category filtering, details, apply, and save/unsave mutations.
 
 ### Authentication and sessions
 
@@ -70,7 +72,8 @@ Official MCP TypeScript SDK v2 serving the Streamable HTTP transport on port 500
 - Web sign-in/register persist tokens and user data in browser localStorage. The navbar restores the account from storage or /api/v1/auth/me, shows `@username` (falling back to the email for accounts without one), and provides sign-out.
 - Mobile sign-in/register persist tokens in Expo Secure Store, restore /auth/me, refresh an expired access token once, and clear the session when refresh fails.
 - API authorization uses bearer access tokens, role checks, and ownership checks.
-- Web route protection, role-aware navigation, and automatic web token refresh are not yet complete; API protection remains authoritative.
+- Web clients are protected by a `ProtectedRoute` wrapper: unauthenticated visitors are sent to sign-in with the intended destination, and role-restricted routes (for example `/account/applications` for freelancers) redirect by role. The API's checks remain authoritative.
+- The web API client performs transparent 401 → refresh → retry that mirrors the mobile client, serializing concurrent refresh attempts, and navbar navigation is role-aware (a Dashboard link appears for CLIENT accounts).
 
 ### Profiles and collaboration
 
@@ -81,7 +84,8 @@ Official MCP TypeScript SDK v2 serving the Streamable HTTP transport on port 500
 - Conversation routes support participant-scoped message reads and sending messages.
 - Notification routes support listing and marking notifications read.
 - Review routes support creation and public user review listing.
-- Mobile has screens for projects, freelancers, proposals, engagements, messages, notifications, and profile. Equivalent web dashboard screens remain roadmap work.
+- The web client currently implements the marketplace, auth, apply, my applications, and account settings (including delete-account confirmation); it has no dashboard, engagement, messaging, notification, or review UI yet.
+- Mobile has screens for a home overview, projects, freelancers, proposals (including client shortlist/reject/accept), engagements, messages, notifications, and profile editing. Mobile has no review screen yet even though the API and translation keys exist.
 
 ## 5. Domain model and status rules
 
@@ -116,7 +120,7 @@ Lifecycle transitions and ownership are checked in the API. A freelancer can sub
 
 All API resources use JSON and are mounted under /api/v1. Successful responses generally use a data envelope; paged project results also include meta. Errors use error.code, error.message, and optional error.details.
 
-Per-endpoint request/response details, auth requirements, field constraints, and status codes are documented in [API.md](API.md). Keep that file in sync with every route change.
+Per-endpoint request/response details, auth requirements, field constraints, and status codes are documented in [api/API.md](api/API.md). Keep that file in sync with every route change.
 
 ### Health
 
@@ -131,6 +135,7 @@ Per-endpoint request/response details, auth requirements, field constraints, and
 - POST /api/v1/auth/refresh
 - POST /api/v1/auth/logout
 - GET /api/v1/auth/me
+- DELETE /api/v1/auth/me (also exposed as the alias DELETE /api/v1/auth/account)
 
 ### Projects and reference data
 
@@ -174,14 +179,14 @@ The database is local development data only. Never point the seed command at pro
 
 ## 10. Verification and definition of done
 
-For web changes run npm --prefix app run typecheck and npm --prefix app run build.
+For web changes run npm --prefix app run typecheck, npm --prefix app run build, and npm --prefix app test.
 
 For API changes run npm --prefix api run typecheck, npm --prefix api run build, and npm --prefix api test.
 
-For mobile changes run npm --prefix mobile run typecheck.
+For mobile changes run npm --prefix mobile run typecheck and npm --prefix mobile test.
 
 Feature work is complete when relevant checks pass, API authorization remains enforced, currency and locale rules are preserved, and affected UI is checked in both themes.
 
 ## 11. Roadmap boundaries
 
-Unfinished areas include web dashboards/forms, automatic web token refresh, protected web routes, full search/filter parity, web messaging/notifications/reviews, admin moderation UI, production security/operations, automated web/mobile tests, and any payment or finance integration. See TODO.md.
+Unfinished areas include a real web dashboard (the current /dashboard is a placeholder), client project creation/edit UI in either client, web engagements/messaging/notifications/reviews, a mobile review screen, full search/filter parity, admin moderation UI, production security/operations, CI plus broader automated web/mobile test coverage, and any payment or finance integration. See TODO.md.

@@ -3,10 +3,10 @@
 ## Project shape
 
 - app/ is the React/Vite website on port 5000.
-- api/ is the independent Express/Prisma/SQLite API on port 5001.
+- api/ is the independent Express/Prisma/SQLite API on port 5001. api/API.md is the hand-maintained HTTP contract for /api/v1.
 - mobile/ is the Expo React Native app. It consumes the same /api/v1 contract as the website.
 - Keep all three projects independently runnable. Integrate them through the documented HTTP API rather than importing code across projects.
-- Docker files are intentionally absent. Use the Node/npm commands in the READMEs.
+- Docker files are intentionally absent, and the root package.json has no orchestration scripts. Use the Node/npm commands in the READMEs.
 
 ## Local development
 
@@ -23,7 +23,8 @@
 
 - Use TypeScript and preserve the existing React, React Router, TanStack React Query, Express, Prisma, Zod, Expo Router, and NativeWind patterns.
 - Validate request input at API boundaries and enforce authorization in the API, not only in the UI.
-- Keep API responses and errors consistent with the existing /api/v1 contract.
+- Keep API responses and errors consistent with the existing /api/v1 contract documented in api/API.md, and update api/API.md when routes change.
+- Preserve the web `ProtectedRoute` guards and the shared 401 → refresh → retry behavior in app/src/api/client.ts and mobile/src/api/client.ts.
 - Store money as integer minor units with an explicit USD or JPY currency code. JPY display uses whole yen with no decimal places; do not infer currency from locale.
 - Do not add payment, exchange-rate, escrow, payout, invoice, or tax behavior without an explicit product request.
 - Prefer small, focused changes and preserve unrelated user work.
@@ -45,9 +46,11 @@ Before handing off changes, run the narrowest relevant checks:
 
     npm --prefix app run typecheck
     npm --prefix app run build
+    npm --prefix app test
     npm --prefix api run typecheck
     npm --prefix api run build
     npm --prefix api test
     npm --prefix mobile run typecheck
+    npm --prefix mobile test
 
 For schema or seed changes, also run the appropriate Prisma generate, migration, and seed commands carefully against local development data. Update README.md, SPEC.md, and TODO.md when the architecture or feature status changes.

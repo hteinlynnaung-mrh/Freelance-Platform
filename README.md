@@ -1,25 +1,23 @@
 # Archer
 
-Archer is a freelance marketplace foundation for connecting clients with independent talent. The repository contains three independently runnable clients/services that share the versioned `/api/v1` HTTP contract:
+Archer is a freelance marketplace foundation for connecting clients with independent talent. The repository contains three independently runnable projects that share the versioned `/api/v1` HTTP contract:
 
 - `app/` — React/Vite website
 - `api/` — Express/Prisma/SQLite API
 - `mobile/` — Expo React Native app
-- `mcp/` — MCP (Streamable HTTP) server that lets AI agents register, log in, and post projects through the API
 
-The current MVP includes public project discovery, project details, authentication, saved projects, profiles, proposals, engagements, conversations, notifications, reviews, and seeded demo data. Payment processing, escrow, payouts, invoices, and automatic exchange-rate conversion are intentionally out of scope.
+The API implements the full MVP slice: public project discovery, authentication, saved projects, profiles, proposals, engagements, conversations, notifications, reviews, and seeded demo data. The web client covers the marketplace, sign-in/registration, the freelancer apply flow, "my applications", and account settings; the mobile client additionally covers engagements, messaging, notifications, freelancer discovery, and profile editing. Payment processing, escrow, payouts, invoices, and automatic exchange-rate conversion are intentionally out of scope.
 
 ## Technology
 
 - Web: React 18, TypeScript, Vite, React Router, TanStack React Query, Tailwind/shadcn-compatible UI, English/Japanese i18n
 - API: Node.js 24, Express 5, TypeScript, Prisma 7, SQLite, Zod, JWT access tokens, rotating hashed refresh tokens
-- MCP: Node.js 24, official MCP TypeScript SDK v2, Streamable HTTP on port 5002, in-memory session/token store
 - Mobile: Expo SDK 58, Expo Router, React Native, NativeWind, TanStack React Query, Expo Secure Store, light/dark/system appearance
 - Supported listing currencies: US Dollar (`USD`) and Japanese Yen (`JPY`/`¥`)
 
 ## Requirements
 
-- Node.js 24.19.x is recommended for all workspaces and required for the API verification environment (`api/.nvmrc` and `app/.nvmrc`).
+- Node.js 24.19.x is recommended for all workspaces and recorded for the API and web app (`api/.nvmrc` and `app/.nvmrc`). The mobile app accepts Node 20 or newer.
 - npm
 - Expo Go or an iOS/Android simulator for mobile development
 
@@ -67,14 +65,13 @@ on the iOS Simulator and `http://10.0.2.2:5001` on the Android emulator — and 
 dev-server host (your LAN IP) on a physical device. Set `EXPO_PUBLIC_API_URL` only for an API that
 is not running on the machine hosting Metro, for example `http://192.168.1.100:5001`.
 
-There are no Docker or container commands required by this repository.
+There are no Docker or container commands required by this repository. The three projects are not npm workspaces; each is installed, run, and verified independently with `npm --prefix <project> ...`.
 
 ## Environment files
 
 - `api/.env.example` — API port, SQLite URL, JWT secret, token lifetimes, and CORS origins
 - `app/.env.example` — optional `VITE_API_URL`
 - `mobile/.env.example` — `EXPO_PUBLIC_API_URL`
-- `mcp/.env.example` — Archer API base URL, MCP bind host and port
 
 Copy the appropriate example before changing environment-specific values. Never commit real secrets. The API requires a development `JWT_ACCESS_SECRET` of at least 32 characters.
 
@@ -96,13 +93,18 @@ The website routes are:
 
 - `/` — landing page
 - `/projects` — searchable/filterable project marketplace
-- `/projects/:id` — published project detail
+- `/projects/:id` — published project detail with the freelancer apply form
 - `/login` — sign in
 - `/register` — account registration
+- `/account/applications` — freelancer "My applications" list (protected, freelancer role)
+- `/account/settings` — account overview and the delete-account confirmation flow (protected); `/account` redirects here
+- `/dashboard` — temporary placeholder that redirects by role; a real dashboard is roadmap work
 
-The web session stores access/refresh tokens and the current user in browser `localStorage`. Authenticated requests include the access token. The navbar restores the current user from storage or `/api/v1/auth/me`, and provides sign-out. The mobile app stores tokens in Expo Secure Store and refreshes expired access tokens automatically.
+The web session stores access/refresh tokens and the current user in browser `localStorage`. Authenticated requests include the access token, and expired access tokens are refreshed and retried automatically. The navbar restores the current user from storage or `/api/v1/auth/me`, and provides sign-out. The mobile app stores tokens in Expo Secure Store and refreshes expired access tokens automatically.
 
 The web theme toggle persists light/dark mode on `<html>` using both `data-theme` and the `dark` class. Web translations are English and Japanese; mobile mirrors the same supported locales. Currency formatting keeps USD and JPY explicit and displays JPY without a dollar sign or decimal places.
+
+Feature coverage differs by client: engagements, conversations, notifications, and freelancer discovery are available on mobile but have no web UI yet, and review submission has no UI in either client (the API routes exist).
 
 ## Verification
 
@@ -123,10 +125,11 @@ For database changes, regenerate Prisma and apply the migration/seed commands ag
 
 ## Further documentation
 
-- [API.md](API.md) — complete agent-ready HTTP reference for the `/api/v1` contract
+- [api/API.md](api/API.md) — complete agent-ready HTTP reference for the `/api/v1` contract
 - [SPEC.md](SPEC.md) — current architecture, API contract, domain rules, and MVP boundaries
 - [TODO.md](TODO.md) — implemented work, partial features, and remaining roadmap
+- [AGENTS.md](AGENTS.md) — contributor instructions for AI agents and humans
+- [CLAUDE.md](CLAUDE.md) — Claude-compatible pointer to the same conventions
 - [api/README.md](api/README.md) — API setup and route inventory
 - [app/README.md](app/README.md) — web-specific setup
 - [mobile/README.md](mobile/README.md) — mobile-specific setup
-- [mcp/README.md](mcp/README.md) — MCP server setup and agent configuration

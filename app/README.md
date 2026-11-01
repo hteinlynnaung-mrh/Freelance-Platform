@@ -20,18 +20,32 @@ The Archer web app is a single-page application built with React, Vite, and Type
 ```
 app/
 ├── src/
-│   ├── api/              # API HTTP client and TypeScript types
-│   ├── auth/             # AuthContext, AuthProvider, protected routes
-│   ├── components/       # UI primitives, navbar, footer, cards
-│   ├── i18n/             # Translations (en/ja) and I18nProvider
-│   ├── lib/              # Formatting, money calculations, helpers
-│   ├── pages/            # Top-level route pages (Landing, Projects, Auth, etc.)
-│   ├── theme/            # Theme context (Light/Dark/System)
+│   ├── api/              # API HTTP client (401 → refresh → retry), types, demo fallback data
+│   ├── auth/             # AuthProvider, ProtectedRoute, account hooks
+│   ├── components/       # AppShell, ProjectCard, UI primitives, footer
+│   ├── i18n/             # Translations (en/ja), category names, I18nProvider
+│   ├── lib/              # Formatting, money calculations, proposal status mapping
+│   ├── pages/            # Route pages (Landing, Projects, Detail, Auth, Applications, Settings)
+│   ├── theme/            # ThemeProvider (Light / Dark, persisted)
 │   ├── App.tsx           # Route setup and app root
 │   └── main.tsx          # Application entry point
 ├── package.json
 └── vite.config.ts
 ```
+
+## Routes
+
+| Route | Access | Behavior |
+|---|---|---|
+| `/` | Public | Landing page |
+| `/projects` | Public | Searchable/filterable project marketplace |
+| `/projects/:id` | Public | Project detail with the freelancer apply form |
+| `/login` | Public | Email/password sign-in |
+| `/register` | Public | Client/freelancer registration |
+| `/account/applications` | Freelancer | "My applications" proposal list with status |
+| `/account/settings` | Authenticated | Account overview and delete-account confirmation; `/account` redirects here |
+| `/dashboard` | Authenticated | Temporary placeholder that redirects by role (not built yet) |
+| `*` | — | Redirects to `/` |
 
 ## Local Setup
 
@@ -77,7 +91,14 @@ npm test
 
 ## Key Features & Conventions
 
-- **Authentication**: Stores JWT access and refresh tokens in browser `localStorage`. Authenticated state is restored on page refresh.
+- **Authentication**: Stores JWT access and refresh tokens in browser `localStorage`. Authenticated state is restored on page refresh, expired access tokens are transparently refreshed and retried, and `ProtectedRoute` guards authenticated/role-restricted routes with intended-destination return.
+- **Apply flow**: Freelancers can submit a proposal (amount, cover letter, optional duration) from the project detail page and track it at `/account/applications`.
 - **Currencies**: Displays `USD` and `JPY` amounts stored in integer minor units. JPY amounts never display decimals.
 - **Themes**: Supports light and dark modes, persisting choices to `localStorage` and applying both `data-theme="dark"` and the `dark` class to `document.documentElement`.
 - **Localization**: Supports English and Japanese with relaxed line-heights and no clipped glyphs.
+- **Not yet built**: real dashboards, project creation/editing, engagement management, messaging, notifications, and reviews (the API supports all of these).
+
+## Known Gaps
+
+- `src/pages/HomePage.tsx`, `LoginPage.tsx`, and `ProjectDetailPage.tsx` are legacy pages that are not routed in `App.tsx`.
+- `/dashboard` is a placeholder redirect, not a dashboard.

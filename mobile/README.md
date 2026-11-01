@@ -31,6 +31,25 @@ mobile/
 └── tailwind.config.js
 ```
 
+## Screens
+
+File-based routes under `app/`:
+
+| Route | Behavior |
+|---|---|
+| `index.tsx` | Auth-gated redirect to the tabs or the sign-in stack |
+| `(auth)/login`, `(auth)/register` | Sign-in and registration |
+| `(tabs)/index` | Home overview: active engagements, recent proposals, notification count |
+| `(tabs)/projects` (`index`, `[id]`) | Project list with save toggle; detail with apply (proposal submission) |
+| `(tabs)/freelancers` (`index`, `[id]`) | Freelancer directory and detail (hidden for FREELANCER accounts) |
+| `(tabs)/proposals` (`index`, `[id]`) | Proposal list/detail; submit, withdraw, and client shortlist/reject/accept |
+| `(tabs)/engagements` (`index`, `[id]`) | Engagement list/detail; submit for review, complete, cancel |
+| `(tabs)/messages` (`index`, `[id]`) | Conversation list and message thread with send |
+| `(tabs)/profile` | Profile editing, language switch, Light/Dark/System appearance, sign-out, delete account |
+| `notifications` | Notification list with mark-as-read (modal) |
+
+Not yet built: a review screen (API routes and en/ja review strings already exist) and client project creation/editing.
+
 ## Local Setup
 
 ### Requirements
@@ -89,7 +108,6 @@ npm test
 
 - `src/api/config.test.ts`: Verifies dynamic API base URL resolution across environments (`EXPO_PUBLIC_API_URL` override, iOS Simulator loopback, Android emulator `10.0.2.2:5001`, and physical device Metro LAN IP).
 - `src/i18n/translations.test.ts`: Verifies complete translation key parity between English (`en`) and Japanese (`ja`).
-
 ## Key Features & Conventions
 
 - **Secure Storage**: Access and refresh tokens are securely stored in `expo-secure-store` and never logged.

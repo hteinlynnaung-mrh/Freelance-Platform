@@ -6,7 +6,7 @@ Independent Express API for the Archer freelance marketplace platform.
 
 The Archer API is an independent Node.js/Express service providing the versioned `/api/v1` HTTP REST contract. It handles authentication, user profiles, project marketplace discovery, proposals, engagements, reviews, notifications, and reference data.
 
-For the complete per-endpoint HTTP reference (request bodies, auth, status codes, field limits), see [API.md](../API.md).
+For the complete per-endpoint HTTP reference (request bodies, auth, status codes, field limits), see [API.md](./API.md) in this directory.
 
 ## Technology Stack
 
@@ -59,11 +59,31 @@ npm run dev
 
 The API starts on `http://localhost:5001`.
 
+The seed creates 50 clients, 100 freelancers, 8 categories, 20 skills, and 250 projects with mixed USD/JPY currencies and published/non-published statuses. It targets only the local SQLite development database — never run it against production data.
+
 ### Health & Diagnostic Endpoints
 
 - `GET /` — API status and version metadata
 - `GET /health` — Process liveness probe
 - `GET /ready` — Database / Prisma connectivity probe
+
+## Route Inventory
+
+All domain routes are mounted under `/api/v1` (see `src/app.ts`):
+
+| Group | Routes |
+|---|---|
+| Auth | `POST /auth/register`, `POST /auth/login`, `POST /auth/refresh`, `POST /auth/logout`, `GET /auth/me`, `DELETE /auth/me` (alias `DELETE /auth/account`) |
+| Projects | `GET /projects`, `GET /projects/:id`, `POST /projects`, `POST /projects/:id/publish`, `GET /projects/saved`, `POST /projects/:id/save`, `DELETE /projects/:id/save` |
+| Profiles | `GET /profiles/me`, `PATCH /profiles/me`, `GET /profiles/freelancers`, `GET /profiles/freelancers/:id` |
+| Proposals | `GET /proposals`, `POST /proposals/projects/:projectId`, `POST /proposals/:id/withdraw`, `POST /proposals/:id/shortlist`, `POST /proposals/:id/reject`, `POST /proposals/:id/accept` |
+| Engagements | `GET /engagements`, `GET /engagements/:id`, `POST /engagements/:id/submit`, `POST /engagements/:id/complete`, `POST /engagements/:id/cancel` |
+| Conversations | `GET /conversations`, `GET /conversations/:id/messages`, `POST /conversations/:id/messages` |
+| Notifications | `GET /notifications`, `POST /notifications/:id/read` |
+| Reviews | `POST /reviews`, `GET /reviews/users/:userId` |
+| Reference | `GET /reference/categories`, `GET /reference/skills` |
+
+Role and ownership checks are enforced in these handlers. The `Report` and `AuditEvent` Prisma models exist but have no routes yet.
 
 ## Available Scripts
 
